@@ -11,9 +11,6 @@
         android:theme="@style/Theme.NewsApp"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".ui.ArticleCard" />
-        <activity android:name=".ui.activities.SavedArticlesPage" />
-        <activity android:name=".ui.activities.SearchPage" />
-        <activity android:name=".ui.activities.HomePage" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

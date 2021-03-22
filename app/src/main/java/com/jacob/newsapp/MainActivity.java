@@ -1,15 +1,16 @@
 package com.jacob.newsapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jacob.newsapp.databinding.ActivityMainBinding;
-import com.jacob.newsapp.ui.activities.HomePage;
-import com.jacob.newsapp.ui.activities.SavedArticlesPage;
-import com.jacob.newsapp.ui.activities.SearchPage;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,17 +22,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        binding.btnHomePage.setOnClickListener(button -> {
-            Intent intent = new Intent(MainActivity.this, HomePage.class);
-            startActivity(intent);
-        });
-        binding.btnSearchPage.setOnClickListener(button -> {
-            Intent intent = new Intent(MainActivity.this, SearchPage.class);
-            startActivity(intent);
-        });
-        binding.btnSavedArticles.setOnClickListener(button -> {
-            Intent intent = new Intent(MainActivity.this, SavedArticlesPage.class);
-            startActivity(intent);
-        });
+
+        setupBottomNavigationBar();
     }
+
+    private void setupBottomNavigationBar() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
+
 }

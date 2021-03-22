@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/homePage">
+
+    <fragment
+        android:id="@+id/savedArticles"
+        android:name="com.jacob.newsapp.ui.fragments.SavedArticles"
+        android:label="fragment_saved_articles"
+        tools:layout="@layout/fragment_saved_articles" >
+        <action
+            android:id="@+id/action_savedArticles_to_searchPage"
+            app:destination="@id/searchPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/profilePage"
+        android:name="com.jacob.newsapp.ui.fragments.ProfilePage"
+        android:label="fragment_profile_page"
+        tools:layout="@layout/fragment_profile_page" />
+    <fragment
+        android:id="@+id/searchPage"
+        android:name="com.jacob.newsapp.ui.fragments.SearchPage"
+        android:label="fragment_search_page"
+        tools:layout="@layout/fragment_search_page" />
+    <fragment
+        android:id="@+id/homePage"
+        android:name="com.jacob.newsapp.ui.fragments.HomePage"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page" >
+        <action
+            android:id="@+id/action_homePage_to_searchPage"
+            app:destination="@id/searchPage" />
+    </fragment>
+</navigation>
