@@ -10,6 +10,8 @@ import com.jacob.newsapp.R;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
 
+//    TODO: FIX UI
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

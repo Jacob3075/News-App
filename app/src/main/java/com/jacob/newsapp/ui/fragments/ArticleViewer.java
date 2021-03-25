@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ArticleViewerFragmentBinding;
 import com.jacob.newsapp.viewmodels.ArticleViewerViewModel;
@@ -29,9 +30,21 @@ public class ArticleViewer extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = ArticleViewerFragmentBinding.inflate(inflater, container, false);
-        ConstraintLayout root = binding.getRoot();
+        CoordinatorLayout root = binding.getRoot();
         binding.btnOpenDrawer.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_articleViewer_to_bottomSheetFragment));
 
+//        Might Cause Errors
+//        app: liftOnScroll = "true"
+//        app: layout_scrollFlags = "scroll|enterAlways|snap"
+
+        MaterialToolbar topAppBar = binding.topAppBar;
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.menu) {
+                Navigation.findNavController(root).navigate(R.id.action_articleViewer_to_bottomSheetFragment);
+                return true;
+            }
+            return false;
+        });
         return root;
     }
 
