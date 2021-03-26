@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.jacob.newsapp.R;
@@ -22,29 +23,33 @@ public class ArticleViewer extends Fragment {
     private ArticleViewerViewModel viewModel;
     private ArticleViewerFragmentBinding binding;
 
-    public static ArticleViewer newInstance() {
-        return new ArticleViewer();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = ArticleViewerFragmentBinding.inflate(inflater, container, false);
         CoordinatorLayout root = binding.getRoot();
-        binding.btnOpenDrawer.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_articleViewer_to_bottomSheetFragment));
-
-//        Might Cause Errors
-//        app: liftOnScroll = "true"
-//        app: layout_scrollFlags = "scroll|enterAlways|snap"
 
         MaterialToolbar topAppBar = binding.topAppBar;
         topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.menu) {
-                Navigation.findNavController(root).navigate(R.id.action_articleViewer_to_bottomSheetFragment);
-                return true;
+            switch (item.getItemId()) {
+                case R.id.saveArticle:
+                case R.id.saveCategory:
+                case R.id.saveSource:
+                case R.id.searchCategory:
+                case R.id.searchSource: {
+                    return false;
+                }
+                default:
+                    return false;
             }
-            return false;
         });
+
+        topAppBar.setTitle("Some New Title");
+        topAppBar.setSubtitle("Some New SubTitle");
+
+        WebView webView = binding.webView;
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl("www.google.com");
         return root;
     }
 

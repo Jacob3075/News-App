@@ -40,18 +40,5 @@
         android:id="@+id/articleViewer"
         android:name="com.jacob.newsapp.ui.fragments.ArticleViewer"
         android:label="article_viewer_fragment"
-        tools:layout="@layout/article_viewer_fragment" >
-        <action
-            android:id="@+id/action_articleViewer_to_bottomSheetFragment"
-            app:destination="@id/bottomSheetFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/bottomSheetFragment"
-        android:name="com.jacob.newsapp.ui.fragments.BottomSheetFragment"
-        android:label="fragment_bottom_sheet"
-        tools:layout="@layout/fragment_bottom_sheet" >
-        <action
-            android:id="@+id/action_bottomSheetFragment_to_articleViewer"
-            app:destination="@id/articleViewer" />
-    </dialog>
+        tools:layout="@layout/article_viewer_fragment" />
 </navigation>
