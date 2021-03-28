@@ -32,5 +32,13 @@
         <action
             android:id="@+id/action_homePage_to_searchPage"
             app:destination="@id/searchPage" />
+        <action
+            android:id="@+id/action_homePage_to_articleViewer"
+            app:destination="@id/articleViewer" />
     </fragment>
+    <fragment
+        android:id="@+id/articleViewer"
+        android:name="com.jacob.newsapp.ui.fragments.ArticleViewer"
+        android:label="article_viewer_fragment"
+        tools:layout="@layout/article_viewer_fragment" />
 </navigation>
