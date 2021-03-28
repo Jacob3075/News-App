@@ -13,12 +13,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.button.MaterialButton;
 import com.jacob.newsapp.R;
-import com.jacob.newsapp.ui.ArticleCard;
 import com.jacob.newsapp.databinding.FragmentHomePageBinding;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.models.MediaStackResponse;
+import com.jacob.newsapp.ui.ArticleCard;
 import com.jacob.newsapp.viewmodels.HomePageViewModal;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,10 +45,7 @@ public class HomePage extends Fragment {
 
 //        binding.btnOpenArticle.setOnClickListener(this::openArticle);
         binding.btnOpenArticle.setOnClickListener(this::getArticlesFromSource);
-
-        View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        MaterialButton button = view.findViewById(R.id.button);
-        button.setOnClickListener(this::openArticleCard);
+        binding.button.setOnClickListener(this::openArticleCard);
 
         return root;
     }
@@ -68,18 +64,13 @@ public class HomePage extends Fragment {
         });
     }
 
-    private void openArticle(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_homePage_to_articleViewer);
+    private void openArticleCard(View onClick) {
+        Intent intent = new Intent(getActivity(), ArticleCard.class);
+        startActivity(intent);
     }
 
-    private void getArticlesFromSource(View view) {
-        MutableLiveData<MediaStackResponse> newsBySource = viewModel.getTrendingNews();
-        newsBySource.observe(getViewLifecycleOwner(), mediaStackResponse -> {
-            List<Article> articles = mediaStackResponse.getArticles();
-            articles.stream()
-                    .limit(15)
-                    .forEach(System.out::println);
-        });
+    private void openArticle(View view) {
+        Navigation.findNavController(view).navigate(R.id.action_homePage_to_articleViewer);
     }
 
     private void getArticlesFromSource(View view) {
