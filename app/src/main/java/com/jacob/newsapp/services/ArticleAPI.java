@@ -8,6 +8,9 @@ import retrofit2.http.Query;
 
 public interface ArticleAPI {
 
-    @GET("top-headlines")
-    Call<MediaStackResponse> getNewsList(@Query("sources") String newsSource, @Query("apiKey") String apiKey);
+    @GET("news")
+    Call<MediaStackResponse> getNewsFromSource(@Query("sources") String newsSource, @Query("access_key") String apiKey);
+
+    @GET("news")
+    Call<MediaStackResponse> getTrendingNews(@Query("access_key") String apiKey);
 }
