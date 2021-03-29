@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">News App</string>
+    <string name="user_name">User Name</string>
+    <string name="john_wick">John Wick</string>
+    <string name="todo">TODO</string>
+    <string name="full_name">"Full Name "</string>
+    <string name="date_of_birth">"Date Of Birth "</string>
+    <string name="email">"Email "</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>
