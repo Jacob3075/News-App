@@ -5,8 +5,6 @@
     android:id="@+id/articleCard"
     android:layout_width="300dp"
     android:layout_height="200dp"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentEnd="true"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -18,8 +16,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/levi_bald">
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgArticleImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:contentDescription="Article Image"
+            android:scaleType="centerCrop"
+            android:background="@drawable/levi_bald"
+            android:src="@drawable/artilce_gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvSource"
