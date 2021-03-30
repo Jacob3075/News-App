@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.ProfilePage">
 
-<ImageView
+    <ImageView
         android:id="@+id/imageView3"
         android:layout_width="108dp"
         android:layout_height="113dp"
@@ -139,28 +139,29 @@
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
-
     <TextView
         android:id="@+id/textView"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:background="@drawable/rounded_corner"
-        android:drawablePadding="-15dp"
+        android:drawablePadding="15dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="center"
         android:paddingStart="20dp"
-        android:paddingEnd="1dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingEnd="20dp"
         android:text="@string/saved_categories"
         android:textColor="@android:color/black"
         android:textSize="19sp"
         android:textStyle="bold"
-        android:clickable="true"
+        app:drawableLeftCompat="@drawable/ic_baseline_table_rows_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        android:focusable="true"
-        app:drawableLeftCompat="@drawable/ic_baseline_table_rows_24" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <Button
         android:id="@+id/button2"
@@ -169,19 +170,7 @@
         android:layout_marginTop="40dp"
         android:text="@string/log_out"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_menu" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
