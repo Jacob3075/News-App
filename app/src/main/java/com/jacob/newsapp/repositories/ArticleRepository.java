@@ -1,6 +1,7 @@
 package com.jacob.newsapp.repositories;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.jacob.newsapp.models.MediaStackResponse;
@@ -30,8 +31,8 @@ public class ArticleRepository {
         articleAPI = RetrofitService.getInterface();
     }
 
-    public MutableLiveData<MediaStackResponse> getNewsBySource(String sources) {
-        articleAPI.getNewsFromSource(sources, API_KEY)
+    public LiveData<MediaStackResponse> getNewsBySource(String sources) {
+        articleAPI.getNewsFromSource(API_KEY, sources)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
@@ -46,7 +47,7 @@ public class ArticleRepository {
         return liveData;
     }
 
-    public MutableLiveData<MediaStackResponse> getTrendingNews() {
+    public LiveData<MediaStackResponse> getTrendingNews() {
         articleAPI.getTrendingNews(API_KEY)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
@@ -61,4 +62,38 @@ public class ArticleRepository {
                 });
         return liveData;
     }
+
+    public LiveData<MediaStackResponse> getNewsByCategory(String category) {
+        articleAPI.getNewsFromCategory(API_KEY, category)
+                .enqueue(new Callback<MediaStackResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
+                        liveData.setValue(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
+                        System.out.println(t.getMessage());
+                    }
+                });
+        return liveData;
+    }
+
+
+    public LiveData<MediaStackResponse> getNewsByKeyWord(String keyWord) {
+        articleAPI.getNewsByKeyWords(API_KEY, keyWord)
+                .enqueue(new Callback<MediaStackResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
+                        liveData.setValue(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
+                        System.out.println(t.getMessage());
+                    }
+                });
+        return liveData;
+    }
+
 }

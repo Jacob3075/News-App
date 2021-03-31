@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.jacob.newsapp.R;
-import com.jacob.newsapp.databinding.FragmentHomePageBinding;
+import com.jacob.newsapp.databinding.HomePageFragmentBinding;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.models.MediaStackResponse;
 import com.jacob.newsapp.ui.ArticleCard;
@@ -27,7 +27,7 @@ import java.util.List;
 
 public class HomePage extends Fragment {
 
-    private FragmentHomePageBinding binding;
+    private HomePageFragmentBinding binding;
     private HomePageViewModal viewModel;
     private List<Article> articles = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class HomePage extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentHomePageBinding.inflate(inflater, container, false);
+        binding = HomePageFragmentBinding.inflate(inflater, container, false);
         ConstraintLayout root = binding.getRoot();
 
 //        binding.btnOpenArticle.setOnClickListener(this::openArticle);
@@ -54,14 +54,6 @@ public class HomePage extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModal.class);
-
-        MutableLiveData<MediaStackResponse> newsBySource = viewModel.getNewsBySource("bbc");
-        newsBySource.observe(getViewLifecycleOwner(), mediaStackResponse -> {
-            List<Article> articles = mediaStackResponse.getArticles();
-            articles.stream()
-                    .limit(15)
-                    .forEach(System.out::println);
-        });
     }
 
     private void openArticleCard(View onClick) {
@@ -70,11 +62,11 @@ public class HomePage extends Fragment {
     }
 
     private void openArticle(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_homePage_to_articleViewer);
+        Navigation.findNavController(view).navigate(R.id.homePage_to_articleViewer);
     }
 
     private void getArticlesFromSource(View view) {
-        MutableLiveData<MediaStackResponse> newsBySource = viewModel.getTrendingNews();
+        LiveData<MediaStackResponse> newsBySource = viewModel.getTrendingNews();
         newsBySource.observe(getViewLifecycleOwner(), mediaStackResponse -> {
             List<Article> articles = mediaStackResponse.getArticles();
             articles.stream()
