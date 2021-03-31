@@ -1,33 +1,24 @@
 package com.jacob.newsapp.viewmodels;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import android.view.View;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
+
+import com.jacob.newsapp.R;
 import com.jacob.newsapp.models.MediaStackResponse;
 import com.jacob.newsapp.repositories.ArticleRepository;
 
 public class HomePageViewModal extends ViewModel {
 
     private final ArticleRepository articleRepository = new ArticleRepository();
-    private final MutableLiveData<MediaStackResponse> liveData;
 
-    public HomePageViewModal() {
-        liveData = new MutableLiveData<>();
+    public void searchButtonClicked(View view) {
+        Navigation.findNavController(view).navigate(R.id.homePage_to_searchPage);
     }
 
-    public MutableLiveData<MediaStackResponse> getTrendingNews() {
+    public LiveData<MediaStackResponse> getTrendingNews() {
         return articleRepository.getTrendingNews();
-    }
-
-    public MutableLiveData<MediaStackResponse> getNewsBySource(String source) {
-        return articleRepository.getNewsBySource(source);
-    }
-
-    public MutableLiveData<MediaStackResponse> searchForNews(String searchQuery) {
-        return articleRepository.getNewsBySource(searchQuery);
-    }
-
-    public MutableLiveData<MediaStackResponse> searchForNewsFromSource(String searchQuery, String source) {
-        return articleRepository.getNewsBySource(source);
     }
 }
