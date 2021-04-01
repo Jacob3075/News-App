@@ -15,6 +15,8 @@
     <string name="_30_03_2002">30–03–2002</string>
     <string name="saved_categories">SAVED CATEGORIES</string>
     <string name="saved_sources">SAVED SOURCES</string>
+    <string name="news_source">bbcnews.com</string>
+    <string name="news_category">Anime/Manga</string>
     <string name="log_out">LOG OUT</string>
     <string name="date_of_birt">Date Of Birth</string>
 </resources>

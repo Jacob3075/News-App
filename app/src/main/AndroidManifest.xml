@@ -12,6 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApp">
+        <activity android:name=".ActivitySavedSource"></activity>
+        <activity android:name=".ActivitySavedCategory" />
         <activity android:name=".ui.ArticleCard" />
         <activity android:name=".MainActivity">
             <intent-filter>
