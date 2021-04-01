@@ -141,4 +141,19 @@ public class Article {
                 ", publishedAt='" + publishedAt + '\'' +
                 '}';
     }
+
+    public boolean notContainsNull() {
+        return !containsNull();
+    }
+
+    public boolean containsNull() {
+        return title == null ||
+                description == null ||
+                source == null ||
+                url == null ||
+                image == null ||
+                category == null ||
+                language == null ||
+                country == null;
+    }
 }
