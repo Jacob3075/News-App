@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/article_viewer_menu"
-            app:subtitle="Some SubTitle"
+            app:subtitle="Some"
             app:title="Some Title" />
 
     </com.google.android.material.appbar.AppBarLayout>
