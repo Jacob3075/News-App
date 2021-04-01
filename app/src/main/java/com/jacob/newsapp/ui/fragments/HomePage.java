@@ -70,6 +70,7 @@ public class HomePage extends Fragment {
         newsBySource.observe(getViewLifecycleOwner(), mediaStackResponse -> {
             List<Article> articles = mediaStackResponse.getArticles();
             articles.stream()
+                    .filter(Article::notContainsNull)
                     .limit(15)
                     .forEach(System.out::println);
         });
