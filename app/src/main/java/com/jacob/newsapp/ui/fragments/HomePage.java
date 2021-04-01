@@ -44,8 +44,8 @@ public class HomePage extends Fragment {
         ConstraintLayout root = binding.getRoot();
 
 //        binding.btnOpenArticle.setOnClickListener(this::openArticle);
-        binding.btnOpenArticle.setOnClickListener(this::getArticlesFromSource);
-        binding.button.setOnClickListener(this::openArticleCard);
+        binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
+        binding.button.setOnClickListener(this::openSearchPage);
 
         return root;
     }
@@ -74,6 +74,10 @@ public class HomePage extends Fragment {
                     .limit(15)
                     .forEach(System.out::println);
         });
+    }
+
+    private void openSearchPage(View view) {
+        Navigation.findNavController(view).navigate(R.id.homePage_to_searchPage);
     }
 
     @Override
