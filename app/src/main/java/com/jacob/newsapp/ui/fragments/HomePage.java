@@ -42,8 +42,8 @@ public class HomePage extends Fragment {
         ConstraintLayout root = binding.getRoot();
 
 //        binding.btnOpenArticle.setOnClickListener(this::openArticle);
-        //binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
-        //binding.button.setOnClickListener(this::openSearchPage);
+        binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
+        binding.button.setOnClickListener(this::openSearchPage);
 
         return root;
     }
