@@ -13,6 +13,9 @@
         <action
             android:id="@+id/savedArticles_to_articleViewer"
             app:destination="@id/articleViewer" />
+        <action
+            android:id="@+id/savedArticles_to_searchPage"
+            app:destination="@id/searchPage" />
     </fragment>
     <fragment
         android:id="@+id/profilePage"
