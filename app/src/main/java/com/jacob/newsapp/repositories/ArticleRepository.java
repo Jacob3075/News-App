@@ -16,7 +16,10 @@ import static com.jacob.newsapp.utilities.Constants.API_KEY;
 
 public class ArticleRepository {
     private static ArticleAPI articleAPI;
-    private final MutableLiveData<MediaStackResponse> liveData = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> newsBySource = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> latestNews = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> newsByCategory = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> newsByKeyWord = new MutableLiveData<>();
 
     private static ArticleRepository articleRepository;
 
@@ -31,12 +34,28 @@ public class ArticleRepository {
         articleAPI = RetrofitService.getInterface();
     }
 
-    public LiveData<MediaStackResponse> getNewsBySource(String sources) {
+    public LiveData<MediaStackResponse> getLatestNews() {
+        return latestNews;
+    }
+
+    public LiveData<MediaStackResponse> getNewsBySource() {
+        return newsBySource;
+    }
+
+    public LiveData<MediaStackResponse> getNewsByCategory() {
+        return newsByCategory;
+    }
+
+    public LiveData<MediaStackResponse> getNewsByKeyWord() {
+        return newsByKeyWord;
+    }
+
+    public void getNewsBySource(String sources) {
         articleAPI.getNewsFromSource(API_KEY, sources)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
+                        newsBySource.setValue(response.body());
                     }
 
                     @Override
@@ -44,15 +63,14 @@ public class ArticleRepository {
                         System.out.println(t.getMessage());
                     }
                 });
-        return liveData;
     }
 
-    public LiveData<MediaStackResponse> getTrendingNews() {
+    public void getTrendingByNews() {
         articleAPI.getTrendingNews(API_KEY)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
+                        latestNews.setValue(response.body());
                     }
 
                     @Override
@@ -60,15 +78,14 @@ public class ArticleRepository {
                         System.out.println(t.getMessage());
                     }
                 });
-        return liveData;
     }
 
-    public LiveData<MediaStackResponse> getNewsByCategory(String category) {
+    public void getNewsByCategory(String category) {
         articleAPI.getNewsFromCategory(API_KEY, category)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
+                        newsByCategory.setValue(response.body());
                     }
 
                     @Override
@@ -76,16 +93,14 @@ public class ArticleRepository {
                         System.out.println(t.getMessage());
                     }
                 });
-        return liveData;
     }
 
-
-    public LiveData<MediaStackResponse> getNewsByKeyWord(String keyWord) {
+    public void getNewsByKeyWord(String keyWord) {
         articleAPI.getNewsByKeyWords(API_KEY, keyWord)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
+                        newsByKeyWord.setValue(response.body());
                     }
 
                     @Override
@@ -93,7 +108,6 @@ public class ArticleRepository {
                         System.out.println(t.getMessage());
                     }
                 });
-        return liveData;
     }
 
 }

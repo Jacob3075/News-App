@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -37,8 +36,7 @@ public class HomePage extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = HomePageFragmentBinding.inflate(inflater, container, false);
         ConstraintLayout root = binding.getRoot();
@@ -54,6 +52,8 @@ public class HomePage extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModal.class);
+
+//        getLatestNews();
     }
 
     private void openArticleCard(View onClick) {
@@ -65,15 +65,17 @@ public class HomePage extends Fragment {
         Navigation.findNavController(view).navigate(R.id.homePage_to_articleViewer);
     }
 
-    private void getArticlesFromSource(View view) {
-        LiveData<MediaStackResponse> newsBySource = viewModel.getTrendingNews();
-        newsBySource.observe(getViewLifecycleOwner(), mediaStackResponse -> {
-            List<Article> articles = mediaStackResponse.getArticles();
-            articles.stream()
-                    .filter(Article::notContainsNull)
-                    .limit(15)
-                    .forEach(System.out::println);
-        });
+    private void getLatestNews() {
+        viewModel.getTrendingNews();
+        viewModel.getLastestNews().observe(getViewLifecycleOwner(), this::setUpRecyclerView);
+    }
+
+    private void setUpRecyclerView(MediaStackResponse mediaStackResponse) {
+        articles = mediaStackResponse.getArticles();
+        articles.stream()
+                .filter(Article::notContainsNull)
+                .limit(15)
+                .forEach(System.out::println);
     }
 
     private void openSearchPage(View view) {

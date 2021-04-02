@@ -13,6 +13,23 @@ public class SearchPageViewModel extends ViewModel {
     private final MutableLiveData<String> query = new MediatorLiveData<>();
     private final MutableLiveData<Boolean> submitted = new MutableLiveData<>();
 
+    public LiveData<MediaStackResponse> getTrendingNews() {
+        return articleRepository.getLatestNews();
+    }
+
+    public LiveData<MediaStackResponse> getNewsBySource() {
+        return articleRepository.getNewsBySource();
+    }
+
+    public LiveData<MediaStackResponse> getNewsByCategory() {
+        return articleRepository.getNewsByCategory();
+    }
+
+    public LiveData<MediaStackResponse> getNewsByKeyWord() {
+        return articleRepository.getNewsByKeyWord();
+    }
+
+
     public LiveData<Boolean> getSubmitted() {
         return submitted;
     }
@@ -29,15 +46,15 @@ public class SearchPageViewModel extends ViewModel {
         return query;
     }
 
-    public LiveData<MediaStackResponse> getNewsBySource(String source) {
-        return articleRepository.getNewsBySource(source);
+    public void searchNewsBySource(String source) {
+        articleRepository.getNewsBySource(source);
     }
 
-    public LiveData<MediaStackResponse> searchForNews(String searchQuery) {
-        return articleRepository.getNewsByKeyWord(searchQuery);
+    public void searchNewsByKeyWord(String searchQuery) {
+        articleRepository.getNewsByKeyWord(searchQuery);
     }
 
-    public LiveData<MediaStackResponse> getNewsByCategory(String category) {
-        return articleRepository.getNewsByCategory(category);
+    public void searchNewsByCategory(String category) {
+         articleRepository.getNewsByCategory(category);
     }
 }

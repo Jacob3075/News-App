@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
-//TODO: FIX SEARCH BAR
 public class SearchPage extends Fragment {
     private SearchPageFragmentBinding binding;
     private SearchPageViewModel viewModel;
