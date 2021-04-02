@@ -41,11 +41,16 @@ public class HomePage extends Fragment {
         binding = HomePageFragmentBinding.inflate(inflater, container, false);
         ConstraintLayout root = binding.getRoot();
 
-//        binding.btnOpenArticle.setOnClickListener(this::openArticle);
-        binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
-        binding.button.setOnClickListener(this::openSearchPage);
+        setUpButtons();
 
         return root;
+    }
+
+    private void setUpButtons() {
+        //        binding.btnOpenArticle.setOnClickListener(this::openArticle);
+        binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
+        binding.button.setOnClickListener(this::openArticle);
+        binding.searchButton.setOnClickListener(this::openSearchPage);
     }
 
     @Override

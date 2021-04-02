@@ -1,4 +1,6 @@
 package com.jacob.newsapp.viewmodels;
 
-public class SavedArticlesViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class SavedArticlesViewModel extends ViewModel {
 }
