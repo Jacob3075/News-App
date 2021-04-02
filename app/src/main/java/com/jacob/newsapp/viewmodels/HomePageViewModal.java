@@ -3,7 +3,6 @@ package com.jacob.newsapp.viewmodels;
 import android.view.View;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 
@@ -14,10 +13,9 @@ import com.jacob.newsapp.repositories.ArticleRepository;
 public class HomePageViewModal extends ViewModel {
 
     private final ArticleRepository articleRepository = new ArticleRepository();
-    private final MutableLiveData<MediaStackResponse> lastestNews = new MutableLiveData<>();
 
     public LiveData<MediaStackResponse> getLastestNews() {
-        return lastestNews;
+        return articleRepository.getLatestNews();
     }
 
     public void searchButtonClicked(View view) {

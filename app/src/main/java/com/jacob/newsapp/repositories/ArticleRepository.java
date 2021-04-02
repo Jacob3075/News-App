@@ -15,6 +15,7 @@ import retrofit2.Response;
 import static com.jacob.newsapp.utilities.Constants.API_KEY;
 
 public class ArticleRepository {
+    private static final String LANGUAGE_ENGLISH = "en";
     private static ArticleAPI articleAPI;
     private final MutableLiveData<MediaStackResponse> newsBySource = new MutableLiveData<>();
     private final MutableLiveData<MediaStackResponse> latestNews = new MutableLiveData<>();
@@ -51,7 +52,7 @@ public class ArticleRepository {
     }
 
     public void getNewsBySource(String sources) {
-        articleAPI.getNewsFromSource(API_KEY, sources)
+        articleAPI.getNewsFromSource(API_KEY, sources, LANGUAGE_ENGLISH)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
@@ -66,7 +67,7 @@ public class ArticleRepository {
     }
 
     public void getTrendingByNews() {
-        articleAPI.getTrendingNews(API_KEY)
+        articleAPI.getTrendingNews(API_KEY, LANGUAGE_ENGLISH)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
@@ -81,7 +82,7 @@ public class ArticleRepository {
     }
 
     public void getNewsByCategory(String category) {
-        articleAPI.getNewsFromCategory(API_KEY, category)
+        articleAPI.getNewsFromCategory(API_KEY, category, LANGUAGE_ENGLISH)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
@@ -96,7 +97,7 @@ public class ArticleRepository {
     }
 
     public void getNewsByKeyWord(String keyWord) {
-        articleAPI.getNewsByKeyWords(API_KEY, keyWord)
+        articleAPI.getNewsByKeyWords(API_KEY, keyWord, LANGUAGE_ENGLISH)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
