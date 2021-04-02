@@ -14,11 +14,15 @@ public class HomePageViewModal extends ViewModel {
 
     private final ArticleRepository articleRepository = new ArticleRepository();
 
+    public LiveData<MediaStackResponse> getLastestNews() {
+        return articleRepository.getLatestNews();
+    }
+
     public void searchButtonClicked(View view) {
         Navigation.findNavController(view).navigate(R.id.homePage_to_searchPage);
     }
 
-    public LiveData<MediaStackResponse> getTrendingNews() {
-        return articleRepository.getTrendingNews();
+    public void getTrendingNews() {
+        articleRepository.getTrendingByNews();
     }
 }

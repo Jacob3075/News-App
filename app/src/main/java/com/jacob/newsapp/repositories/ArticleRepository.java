@@ -15,8 +15,12 @@ import retrofit2.Response;
 import static com.jacob.newsapp.utilities.Constants.API_KEY;
 
 public class ArticleRepository {
+    private static final String LANGUAGE_ENGLISH = "en";
     private static ArticleAPI articleAPI;
-    private final MutableLiveData<MediaStackResponse> liveData = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> newsBySource = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> latestNews = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> newsByCategory = new MutableLiveData<>();
+    private final MutableLiveData<MediaStackResponse> newsByKeyWord = new MutableLiveData<>();
 
     private static ArticleRepository articleRepository;
 
@@ -31,61 +35,28 @@ public class ArticleRepository {
         articleAPI = RetrofitService.getInterface();
     }
 
-    public LiveData<MediaStackResponse> getNewsBySource(String sources) {
-        articleAPI.getNewsFromSource(API_KEY, sources)
-                .enqueue(new Callback<MediaStackResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
-                    }
-                });
-        return liveData;
+    public LiveData<MediaStackResponse> getLatestNews() {
+        return latestNews;
     }
 
-    public LiveData<MediaStackResponse> getTrendingNews() {
-        articleAPI.getTrendingNews(API_KEY)
-                .enqueue(new Callback<MediaStackResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
-                    }
-                });
-        return liveData;
+    public LiveData<MediaStackResponse> getNewsBySource() {
+        return newsBySource;
     }
 
-    public LiveData<MediaStackResponse> getNewsByCategory(String category) {
-        articleAPI.getNewsFromCategory(API_KEY, category)
-                .enqueue(new Callback<MediaStackResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
-                    }
-                });
-        return liveData;
+    public LiveData<MediaStackResponse> getNewsByCategory() {
+        return newsByCategory;
     }
 
+    public LiveData<MediaStackResponse> getNewsByKeyWord() {
+        return newsByKeyWord;
+    }
 
-    public LiveData<MediaStackResponse> getNewsByKeyWord(String keyWord) {
-        articleAPI.getNewsByKeyWords(API_KEY, keyWord)
+    public void getNewsBySource(String sources) {
+        articleAPI.getNewsFromSource(API_KEY, sources, LANGUAGE_ENGLISH)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        liveData.setValue(response.body());
+                        newsBySource.setValue(response.body());
                     }
 
                     @Override
@@ -93,7 +64,51 @@ public class ArticleRepository {
                         System.out.println(t.getMessage());
                     }
                 });
-        return liveData;
+    }
+
+    public void getTrendingByNews() {
+        articleAPI.getTrendingNews(API_KEY, LANGUAGE_ENGLISH)
+                .enqueue(new Callback<MediaStackResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
+                        latestNews.setValue(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
+                        System.out.println(t.getMessage());
+                    }
+                });
+    }
+
+    public void getNewsByCategory(String category) {
+        articleAPI.getNewsFromCategory(API_KEY, category, LANGUAGE_ENGLISH)
+                .enqueue(new Callback<MediaStackResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
+                        newsByCategory.setValue(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
+                        System.out.println(t.getMessage());
+                    }
+                });
+    }
+
+    public void getNewsByKeyWord(String keyWord) {
+        articleAPI.getNewsByKeyWords(API_KEY, keyWord, LANGUAGE_ENGLISH)
+                .enqueue(new Callback<MediaStackResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
+                        newsByKeyWord.setValue(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
+                        System.out.println(t.getMessage());
+                    }
+                });
     }
 
 }
