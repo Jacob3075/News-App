@@ -56,12 +56,14 @@ public class ArticleRepository {
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        newsBySource.setValue(response.body());
+                        if (response.isSuccessful()) {
+                            newsBySource.setValue(response.body());
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
+                        System.out.println("ERROR: " + t.getMessage());
                     }
                 });
     }
@@ -71,12 +73,14 @@ public class ArticleRepository {
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        latestNews.setValue(response.body());
+                        if (response.isSuccessful()) {
+                            latestNews.setValue(response.body());
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
+                        System.out.println("ERROR: " + t.getMessage());
                     }
                 });
     }
@@ -86,12 +90,14 @@ public class ArticleRepository {
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        newsByCategory.setValue(response.body());
+                        if (response.isSuccessful()) {
+                            newsByCategory.setValue(response.body());
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
+                        System.out.println("ERROR: " + t.getMessage());
                     }
                 });
     }
@@ -101,12 +107,14 @@ public class ArticleRepository {
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        newsByKeyWord.setValue(response.body());
+                        if (response.isSuccessful()) {
+                            newsByKeyWord.setValue(response.body());
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println(t.getMessage());
+                        System.out.println("ERROR: " + t.getMessage());
                     }
                 });
     }
