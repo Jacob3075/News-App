@@ -59,4 +59,9 @@ public class ArticleViewer extends Fragment {
         viewModel = new ViewModelProvider(this).get(ArticleViewerViewModel.class);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }

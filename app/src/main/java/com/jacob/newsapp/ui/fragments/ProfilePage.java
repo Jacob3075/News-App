@@ -36,8 +36,20 @@ public class ProfilePage extends Fragment {
         binding = ProfilePageFragmentBinding.inflate(inflater, container, false);
 
         ConstraintLayout root = binding.getRoot();
-        binding.textView.setOnClickListener(this::openSavedCategoriesPage);
+
+        setUpButtons();
 
         return root;
+    }
+
+    private void setUpButtons() {
+        binding.savedCategoriesButton.setOnClickListener(this::openSavedCategoriesPage);
+        binding.savedSourcesButton.setOnClickListener(this::openSavedSourcesPage);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }
