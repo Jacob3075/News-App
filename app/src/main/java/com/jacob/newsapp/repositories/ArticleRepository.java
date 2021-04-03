@@ -17,22 +17,21 @@ import static com.jacob.newsapp.utilities.Constants.API_KEY;
 public class ArticleRepository {
     private static final String LANGUAGE_ENGLISH = "en";
     private static ArticleAPI articleAPI;
+    private static ArticleRepository articleRepository;
     private final MutableLiveData<MediaStackResponse> newsBySource = new MutableLiveData<>();
     private final MutableLiveData<MediaStackResponse> latestNews = new MutableLiveData<>();
     private final MutableLiveData<MediaStackResponse> newsByCategory = new MutableLiveData<>();
     private final MutableLiveData<MediaStackResponse> newsByKeyWord = new MutableLiveData<>();
 
-    private static ArticleRepository articleRepository;
+    public ArticleRepository() {
+        articleAPI = RetrofitService.getInterface();
+    }
 
     public static ArticleRepository getInstance() {
         if (articleRepository == null) {
             articleRepository = new ArticleRepository();
         }
         return articleRepository;
-    }
-
-    public ArticleRepository() {
-        articleAPI = RetrofitService.getInterface();
     }
 
     public LiveData<MediaStackResponse> getLatestNews() {

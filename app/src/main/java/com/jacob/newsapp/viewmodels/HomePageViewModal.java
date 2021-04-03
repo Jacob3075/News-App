@@ -14,7 +14,7 @@ public class HomePageViewModal extends ViewModel {
 
     private final ArticleRepository articleRepository = new ArticleRepository();
 
-    public LiveData<MediaStackResponse> getLastestNews() {
+    public LiveData<MediaStackResponse> getLatestNews() {
         return articleRepository.getLatestNews();
     }
 

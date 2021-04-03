@@ -72,7 +72,7 @@ public class HomePage extends Fragment {
 
     private void getLatestNews() {
         viewModel.getTrendingNews();
-        viewModel.getLastestNews().observe(getViewLifecycleOwner(), this::setUpRecyclerView);
+        viewModel.getLatestNews().observe(getViewLifecycleOwner(), this::setUpRecyclerView);
     }
 
     private void setUpRecyclerView(MediaStackResponse mediaStackResponse) {
