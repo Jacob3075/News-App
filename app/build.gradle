@@ -60,4 +60,8 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    // For control over item selection of both touch and mouse driven selection
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
 }
