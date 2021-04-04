@@ -1,14 +1,16 @@
-package com.jacob.newsapp;
+package com.jacob.newsapp.ui.activities;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ActivitySavedCategory extends AppCompatActivity {
+import com.jacob.newsapp.R;
+
+public class SignUpScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_category);
+        setContentView(R.layout.activity_sign_up_screen);
     }
 }

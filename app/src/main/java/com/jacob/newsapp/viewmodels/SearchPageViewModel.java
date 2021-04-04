@@ -38,12 +38,12 @@ public class SearchPageViewModel extends ViewModel {
         submitted.setValue(newSubmittedValue);
     }
 
-    public void setQuery(String newQuery) {
-        query.setValue(newQuery);
-    }
-
     public LiveData<String> getQuery() {
         return query;
+    }
+
+    public void setQuery(String newQuery) {
+        query.setValue(newQuery);
     }
 
     public void searchNewsBySource(String source) {
@@ -55,6 +55,6 @@ public class SearchPageViewModel extends ViewModel {
     }
 
     public void searchNewsByCategory(String category) {
-         articleRepository.getNewsByCategory(category);
+        articleRepository.getNewsByCategory(category);
     }
 }
