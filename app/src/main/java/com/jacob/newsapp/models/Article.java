@@ -152,8 +152,6 @@ public class Article {
                 source == null ||
                 url == null ||
                 image == null ||
-                category == null ||
-                language == null ||
-                country == null;
+                category == null;
     }
 }

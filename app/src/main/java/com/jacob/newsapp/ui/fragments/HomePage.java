@@ -41,16 +41,14 @@ public class HomePage extends Fragment {
         binding = HomePageFragmentBinding.inflate(inflater, container, false);
         ConstraintLayout root = binding.getRoot();
 
-        setUpButtons();
-
         return root;
     }
 
     private void setUpButtons() {
-        //        binding.btnOpenArticle.setOnClickListener(this::openArticle);
+//        binding.btnOpenArticle.setOnClickListener(viewModel::testFireStoreRead);
         binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
-        binding.button.setOnClickListener(this::openArticle);
-        binding.searchButton.setOnClickListener(this::openSearchPage);
+        binding.button.setOnClickListener(viewModel::openArticle);
+        binding.searchButton.setOnClickListener(viewModel::searchButtonClicked);
     }
 
     @Override
@@ -59,6 +57,7 @@ public class HomePage extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModal.class);
 
 //        getLatestNews();
+        setUpButtons();
     }
 
     private void openArticleCard(View onClick) {
@@ -66,13 +65,9 @@ public class HomePage extends Fragment {
         startActivity(intent);
     }
 
-    private void openArticle(View view) {
-        Navigation.findNavController(view).navigate(R.id.homePage_to_articleViewer);
-    }
-
     private void getLatestNews() {
         viewModel.getTrendingNews();
-        viewModel.getLastestNews().observe(getViewLifecycleOwner(), this::setUpRecyclerView);
+        viewModel.getLatestNews().observe(getViewLifecycleOwner(), this::setUpRecyclerView);
     }
 
     private void setUpRecyclerView(MediaStackResponse mediaStackResponse) {

@@ -26,7 +26,7 @@ public class SavedCategoriesAdapter extends RecyclerView.Adapter<SavedCategories
     public SavedCategoriesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.activity_saved_category, parent, false);
-        return null;
+        return new MyViewHolder(view);
     }
 
     @Override

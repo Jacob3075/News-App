@@ -26,7 +26,7 @@ public class SavedSourcesAdapter extends RecyclerView.Adapter<SavedSourcesAdapte
     public SavedSourcesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.activity_saved_source, parent, false);
-        return null;
+        return new MyViewHolder(view);
     }
 
     @Override

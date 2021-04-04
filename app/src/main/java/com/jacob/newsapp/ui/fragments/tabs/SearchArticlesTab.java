@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import com.jacob.newsapp.models.MediaStackResponse;
 import com.jacob.newsapp.viewmodels.SearchPageViewModel;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchArticlesTab extends Fragment {
 
@@ -42,7 +42,6 @@ public class SearchArticlesTab extends Fragment {
     }
 
     private void setUpRecyclerView() {
-//        viewModel.getSubmitted().observe(getViewLifecycleOwner(), this::submitQueryIfNotEmpty);
         viewModel.getNewsByKeyWord().observe(getViewLifecycleOwner(), this::updateRecyclerViewWithResults);
     }
 
@@ -51,18 +50,23 @@ public class SearchArticlesTab extends Fragment {
     }
 
     private void submitQueryIfNotEmpty(Boolean submitted) {
-        String query = viewModel.getQuery().getValue();
-        if (submitted) {
-            binding.textView.setText(query);
-//        if (submitted && !query.isEmpty()) {
-//            viewModel.searchForNews(query);
-        } else if (query.isEmpty()) {
-            Toast.makeText(getContext(), "Enter a search query", Toast.LENGTH_SHORT).show();
+        String keywordQuery = viewModel.getQuery().getValue();
+        if (submitted && !keywordQuery.isEmpty()) {
+            viewModel.searchNewsByKeyWord(keywordQuery);
+        } else if (keywordQuery.isEmpty()) {
+//            Toast.makeText(getContext(), "Enter a search query", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void updateRecyclerViewWithResults(MediaStackResponse mediaStackResponse) {
         List<Article> articles = mediaStackResponse.getArticles();
+        List<String> collect = articles.stream()
+                .filter(Article::notContainsNull)
+                .limit(15)
+                .map(Article::getTitle)
+                .collect(Collectors.toList());
+//                .forEach(x -> Log.d("ARTICLE", x.getTitle() + ", " + x.getSource() + ", " + x.getCategory()));
+        binding.textView.setText(collect.toString());
     }
 
     @Override

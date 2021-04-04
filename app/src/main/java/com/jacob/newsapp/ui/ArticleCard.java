@@ -1,8 +1,8 @@
 package com.jacob.newsapp.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.jacob.newsapp.R;
 
