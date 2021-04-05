@@ -11,8 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacob.newsapp.R;
+import com.jacob.newsapp.adapters.RecyclerViewAdapter;
+import com.jacob.newsapp.adapters.RecyclerViewModel;
 import com.jacob.newsapp.databinding.HomePageFragmentBinding;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.models.MediaStackResponse;
@@ -25,6 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomePage extends Fragment {
+
+
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
+    List<RecyclerViewModel> articlecards;
+    RecyclerViewAdapter adapter;
 
     private HomePageFragmentBinding binding;
     private HomePageViewModal viewModel;
@@ -44,6 +54,34 @@ public class HomePage extends Fragment {
         return root;
     }
 
+    private void initData() {
+
+
+
+
+    }
+
+
+    private void initRecyclerView() {
+
+
+        articlecards=new ArrayList<>();
+
+
+        articlecards.add(new RecyclerViewModel(R.drawable.levi_bald,"abc.com","lets get it",12));
+        articlecards.add(new RecyclerViewModel(R.drawable.levi_bald,"abc.com","lets get it",12));
+
+
+        recyclerView=binding.recyclerview;
+        layoutManager= new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter=new RecyclerViewAdapter(articlecards);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+    }
+
     private void setUpButtons() {
 //        binding.btnOpenArticle.setOnClickListener(viewModel::testFireStoreRead);
         binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
@@ -58,6 +96,7 @@ public class HomePage extends Fragment {
 
 //        getLatestNews();
         setUpButtons();
+        initRecyclerView();
     }
 
     private void openArticleCard(View onClick) {

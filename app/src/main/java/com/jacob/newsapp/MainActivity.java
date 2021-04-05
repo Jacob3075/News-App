@@ -54,37 +54,9 @@ public class MainActivity extends AppCompatActivity {
         binding = null;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.recyclerview_articlecard);
-
-        initData();
-        initRecyclerView();
-    }
-
-    private void initData() {
-
-        articlecards=new ArrayList<>();
-
-
-        articlecards.add(new RecyclerViewModel(R.drawable.levi_bald,"abc.com","lets get it",12));
 
 
 
-    }
 
-
-    private void initRecyclerView() {
-
-        recyclerView=findViewById(R.id.recyclerview);
-        layoutManager= new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter=new RecyclerViewAdapter(articlecards);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-    }
 
 }
