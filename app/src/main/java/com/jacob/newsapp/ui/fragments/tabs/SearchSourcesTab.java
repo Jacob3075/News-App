@@ -21,57 +21,63 @@ import java.util.stream.Collectors;
 
 public class SearchSourcesTab extends Fragment {
 
-    private SearchPageViewModel viewModel;
-    private SearchSourcesTabFragmentBinding binding;
+	private SearchPageViewModel             viewModel;
+	private SearchSourcesTabFragmentBinding binding;
 
-    public static SearchSourcesTab newInstance() {
-        return new SearchSourcesTab();
-    }
+	public static SearchSourcesTab newInstance() {
+		return new SearchSourcesTab();
+	}
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = SearchSourcesTabFragmentBinding.inflate(inflater, container, false);
-        ConstraintLayout root = binding.getRoot();
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+	                         @Nullable Bundle savedInstanceState) {
+		binding = SearchSourcesTabFragmentBinding.inflate(inflater, container, false);
+		ConstraintLayout root = binding.getRoot();
 
-        return root;
+		return root;
 
-    }
+	}
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(SearchPageViewModel.class);
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		viewModel = new ViewModelProvider(requireActivity()).get(SearchPageViewModel.class);
 
-        setUpTextView();
-        setUpRecyclerView();
-    }
+		setUpTextView();
+		setUpRecyclerView();
+	}
 
-    private void setUpRecyclerView() {
-        viewModel.getNewsBySource().observe(getViewLifecycleOwner(), this::updateRecyclerViewWithResults);
-    }
+	private void setUpRecyclerView() {
+		viewModel.getNewsBySource()
+		         .observe(getViewLifecycleOwner(), this::updateRecyclerViewWithResults);
+	}
 
-    private void setUpTextView() {
-        viewModel.getSubmitted().observe(getViewLifecycleOwner(), this::submitQueryIfNotEmpty);
-    }
+	private void setUpTextView() {
+		viewModel.getSubmitted().observe(getViewLifecycleOwner(), this::submitQueryIfNotEmpty);
+	}
 
-    private void submitQueryIfNotEmpty(Boolean submitted) {
-        String sourceQuery = viewModel.getQuery().getValue();
-        if (submitted && !sourceQuery.isEmpty()) {
-            viewModel.searchNewsBySource(sourceQuery);
-        } else if (sourceQuery.isEmpty()) {
+	private void submitQueryIfNotEmpty(Boolean submitted) {
+		String sourceQuery = viewModel.getQuery().getValue();
+		if (submitted && !sourceQuery.isEmpty()) {
+			viewModel.searchNewsBySource(sourceQuery);
+		} else if (sourceQuery.isEmpty()) {
 //            Toast.makeText(getContext(), "Enter a search query", Toast.LENGTH_SHORT).show();
-        }
-    }
+		}
+	}
 
-    private void updateRecyclerViewWithResults(MediaStackResponse mediaStackResponse) {
-        List<Article> articles = mediaStackResponse.getArticles();
-        List<String> collect = articles.stream()
-                .filter(Article::notContainsNull)
-                .limit(15)
-                .map(Article::getSource)
-                .collect(Collectors.toList());
-//                .forEach(x -> Log.d("SOURCE", x.getTitle() + ", " + x.getSource() + ", " + x.getCategory()));
-        binding.textView.setText(collect.toString());
-    }
+	private void updateRecyclerViewWithResults(MediaStackResponse mediaStackResponse) {
+		List<Article> articles = mediaStackResponse.getArticles();
+		List<String> collect = articles.stream()
+		                               .filter(Article::notContainsNull)
+		                               .limit(15)
+		                               .map(Article::getSource)
+		                               .collect(Collectors.toList());
+		binding.textView.setText(collect.toString());
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

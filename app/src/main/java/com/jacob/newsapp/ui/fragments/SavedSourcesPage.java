@@ -15,23 +15,23 @@ import com.jacob.newsapp.viewmodels.SavedSourcesPageViewModel;
 
 public class SavedSourcesPage extends Fragment {
 
-    private SavedSourcesPageViewModel mViewModel;
+	private SavedSourcesPageViewModel mViewModel;
 
-    public static SavedSourcesPage newInstance() {
-        return new SavedSourcesPage();
-    }
+	public static SavedSourcesPage newInstance() {
+		return new SavedSourcesPage();
+	}
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.saved_sources_page_fragment, container, false);
-    }
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+	                         @Nullable Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.saved_sources_page_fragment, container, false);
+	}
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SavedSourcesPageViewModel.class);
-        // TODO: Use the ViewModel
-    }
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		mViewModel = new ViewModelProvider(this).get(SavedSourcesPageViewModel.class);
+		// TODO: Use the ViewModel
+	}
 
 }

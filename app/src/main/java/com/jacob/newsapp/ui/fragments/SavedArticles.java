@@ -19,41 +19,43 @@ import org.jetbrains.annotations.NotNull;
 
 public class SavedArticles extends Fragment {
 
-    private SavedArticlesFragmentBinding binding;
-    private SavedArticlesViewModel viewModel;
+	private SavedArticlesFragmentBinding binding;
+	private SavedArticlesViewModel       viewModel;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = SavedArticlesFragmentBinding.inflate(inflater, container, false);
-        ConstraintLayout root = binding.getRoot();
+	@Override
+	public View onCreateView(@NotNull LayoutInflater inflater,
+	                         ViewGroup container,
+	                         Bundle savedInstanceState) {
+		binding = SavedArticlesFragmentBinding.inflate(inflater, container, false);
+		ConstraintLayout root = binding.getRoot();
 
-        setUpButtons();
+		setUpButtons();
 
-        return root;
-    }
+		return root;
+	}
 
-    private void setUpButtons() {
-        binding.searchButton.setOnClickListener(this::openSearchPage);
-    }
+	private void setUpButtons() {
+		binding.searchButton.setOnClickListener(this::openSearchPage);
+	}
 
-    private void openSearchPage(View view) {
-        Navigation.findNavController(view).navigate(R.id.savedArticles_to_searchPage);
-    }
+	private void openSearchPage(View view) {
+		Navigation.findNavController(view).navigate(R.id.savedArticles_to_searchPage);
+	}
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(SavedArticlesViewModel.class);
-    }
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		viewModel = new ViewModelProvider(this).get(SavedArticlesViewModel.class);
+	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

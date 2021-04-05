@@ -14,34 +14,31 @@ import com.jacob.newsapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+	private ActivityMainBinding binding;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		binding = ActivityMainBinding.inflate(getLayoutInflater());
+		View view = binding.getRoot();
+		setContentView(view);
 
-        setupBottomNavigationBar();
-    }
+		setupBottomNavigationBar();
+	}
 
-    private void setupBottomNavigationBar() {
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-    }
+	private void setupBottomNavigationBar() {
+		NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(
+				R.id.nav_host_fragment);
+		NavController        navController        = navHostFragment.getNavController();
+		BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
+		NavigationUI.setupWithNavController(bottomNavigationView, navController);
+	}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
-
-
-
-
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		binding = null;
+	}
 
 
 }

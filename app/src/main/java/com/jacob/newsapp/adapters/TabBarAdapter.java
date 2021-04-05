@@ -11,32 +11,32 @@ import java.util.List;
 
 public class TabBarAdapter extends FragmentStatePagerAdapter {
 
-    private final List<Fragment> fragmentList = new ArrayList<>();
-    private final List<String> fragmentTitleList = new ArrayList<>();
+	private final List<Fragment> fragmentList      = new ArrayList<>();
+	private final List<String>   fragmentTitleList = new ArrayList<>();
 
-    public TabBarAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
-    }
+	public TabBarAdapter(@NonNull FragmentManager fm, int behavior) {
+		super(fm, behavior);
+	}
 
-    @NonNull
-    @Override
-    public Fragment getItem(int position) {
-        return fragmentList.get(position);
-    }
+	@NonNull
+	@Override
+	public Fragment getItem(int position) {
+		return fragmentList.get(position);
+	}
 
-    @Override
-    public int getCount() {
-        return fragmentList.size();
-    }
+	@Override
+	public int getCount() {
+		return fragmentList.size();
+	}
 
-    public void addFragment(Fragment fragment, String title) {
-        fragmentList.add(fragment);
-        fragmentTitleList.add(title);
-    }
+	public void addFragment(Fragment fragment, String title) {
+		fragmentList.add(fragment);
+		fragmentTitleList.add(title);
+	}
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return fragmentTitleList.get(position);
-    }
+	@Nullable
+	@Override
+	public CharSequence getPageTitle(int position) {
+		return fragmentTitleList.get(position);
+	}
 }

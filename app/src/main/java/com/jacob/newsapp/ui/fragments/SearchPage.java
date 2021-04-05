@@ -26,69 +26,70 @@ import org.jetbrains.annotations.NotNull;
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class SearchPage extends Fragment {
-    private SearchPageFragmentBinding binding;
-    private SearchPageViewModel viewModel;
+	private SearchPageFragmentBinding binding;
+	private SearchPageViewModel       viewModel;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = SearchPageFragmentBinding.inflate(inflater, container, false);
-        ConstraintLayout root = binding.getRoot();
+	@Override
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		binding = SearchPageFragmentBinding.inflate(inflater, container, false);
+		ConstraintLayout root = binding.getRoot();
 
-        setUpTabBar();
+		setUpTabBar();
 
-        return root;
-    }
+		return root;
+	}
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(SearchPageViewModel.class);
-        setUpSearchBar();
-    }
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		viewModel = new ViewModelProvider(requireActivity()).get(SearchPageViewModel.class);
+		setUpSearchBar();
+	}
 
-    private void setUpSearchBar() {
-        SearchView searchView = binding.searchView;
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                viewModel.setQuery(query);
-                Toast.makeText(getContext(), "Submitted", Toast.LENGTH_SHORT).show();
-                viewModel.setSubmitted(true);
-                return false;
-            }
+	private void setUpSearchBar() {
+		SearchView searchView = binding.searchView;
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				viewModel.setQuery(query);
+				Toast.makeText(getContext(), "Submitted", Toast.LENGTH_SHORT).show();
+				viewModel.setSubmitted(true);
+				return false;
+			}
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                viewModel.setQuery(newText);
-                viewModel.setSubmitted(false);
-                return false;
-            }
-        });
-    }
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				viewModel.setQuery(newText);
+				viewModel.setSubmitted(false);
+				return false;
+			}
+		});
+	}
 
-    private void setUpTabBar() {
-        ViewPager viewPager = binding.viewPager;
-        TabLayout tabLayout = binding.tabLayout;
+	private void setUpTabBar() {
+		ViewPager viewPager = binding.viewPager;
+		TabLayout tabLayout = binding.tabLayout;
 
-        TabBarAdapter adapter = new TabBarAdapter(getParentFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+		TabBarAdapter adapter = new TabBarAdapter(getParentFragmentManager(),
+				BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-        adapter.addFragment(new SearchArticlesTab(), "Articles");
-        adapter.addFragment(new SearchSourcesTab(), "Sources");
-        adapter.addFragment(new SearchCategoriesTab(), "Categories");
+		adapter.addFragment(new SearchArticlesTab(), "Articles");
+		adapter.addFragment(new SearchSourcesTab(), "Sources");
+		adapter.addFragment(new SearchCategoriesTab(), "Categories");
 
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-    }
+		viewPager.setAdapter(adapter);
+		tabLayout.setupWithViewPager(viewPager);
+	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }
