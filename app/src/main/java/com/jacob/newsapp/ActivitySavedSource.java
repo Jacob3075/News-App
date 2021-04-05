@@ -9,6 +9,6 @@ public class ActivitySavedSource extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_source);
+        setContentView(R.layout.saved_source_row_item);
     }
 }

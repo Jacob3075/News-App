@@ -38,4 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         binding = null;
     }
+
+
+
+
+
+
 }

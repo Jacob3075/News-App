@@ -9,6 +9,6 @@ public class ActivitySavedCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_category);
+        setContentView(R.layout.saved_category_row_item);
     }
 }
