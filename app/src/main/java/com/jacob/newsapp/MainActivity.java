@@ -2,31 +2,17 @@ package com.jacob.newsapp;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.jacob.newsapp.adapters.RecyclerViewAdapter;
-import com.jacob.newsapp.adapters.RecyclerViewModel;
 import com.jacob.newsapp.databinding.ActivityMainBinding;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    List<RecyclerViewModel> articlecards;
-    RecyclerViewAdapter adapter;
-
 
     private ActivityMainBinding binding;
 
@@ -39,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         setupBottomNavigationBar();
     }
-
 
     private void setupBottomNavigationBar() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);

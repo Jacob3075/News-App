@@ -11,73 +11,66 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacob.newsapp.R;
+import com.jacob.newsapp.models.Article;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Viewholder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CardViewholder> {
 
-    private List<RecyclerViewModel> articlecards;
+    private final List<Article> articleList;
 
-    public RecyclerViewAdapter(List<RecyclerViewModel> articlecards){
-        this.articlecards=articlecards;
+    public RecyclerViewAdapter(List<Article> articleList) {
+        this.articleList = articleList;
     }
-
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_article_card,parent,false);
-        return new Viewholder(view);
+    public CardViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_card, parent, false);
+        return new CardViewholder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.Viewholder holder, int position) {
+    public void onBindViewHolder(@NonNull CardViewholder holder, int position) {
+        holder.setData(articleList.get(position));
+        holder.setClickListner(view -> {
 
-        int articleimg=articlecards.get(position).getImgArticleImage();
-        String source=articlecards.get(position).getTvSource();
-        String articletitle=articlecards.get(position).getTvTitle();
-        int savearticle=articlecards.get(position).getBtnSaveArticle();
-
-        holder.setdata(articleimg,source,articletitle,savearticle);
-
+        });
     }
 
     @Override
     public int getItemCount() {
-        return articlecards.size();
+        return articleList.size();
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder {
+    class CardViewholder extends RecyclerView.ViewHolder {
 
-        private ImageView articleimg1;
-        private Button saveartlcle1;
-        private TextView title1;
-        private TextView source1;
+        private final ImageView articleImg;
+        private final Button saveArtlcleButton;
+        private final TextView title;
+        private final TextView source;
 
 
-        public Viewholder(@NonNull View itemView) {
+        public CardViewholder(@NonNull View itemView) {
             super(itemView);
 
-            articleimg1=itemView.findViewById(R.id.imgArticleImage);
-            saveartlcle1=itemView.findViewById(R.id.btnSaveArticle);
-            title1=itemView.findViewById(R.id.tvTitle);
-            source1=itemView.findViewById(R.id.tvSource);
-
-
-
-
-
-
-
+            articleImg = itemView.findViewById(R.id.imgArticleImage);
+            saveArtlcleButton = itemView.findViewById(R.id.btnSaveArticle);
+            title = itemView.findViewById(R.id.tvTitle);
+            source = itemView.findViewById(R.id.tvSource);
         }
 
-        public void setdata(int articleimg, String source, String articletitle, int savearticle) {
+        public void setData(Article article) {
+//            TODO
+//            articleImg.
+            title.setText(article.getTitle());
+            source.setText(article.getSource());
+        }
 
-            articleimg1.setImageResource(articleimg);
-            source1.setText(source);
-            title1.setText(articletitle);
-
-
+        public void setClickListner(Consumer<View> onClickListener) {
+            saveArtlcleButton.setOnClickListener(view -> {
+            });
         }
     }
 }

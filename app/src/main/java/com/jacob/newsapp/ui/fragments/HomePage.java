@@ -10,13 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jacob.newsapp.R;
 import com.jacob.newsapp.adapters.RecyclerViewAdapter;
-import com.jacob.newsapp.adapters.RecyclerViewModel;
 import com.jacob.newsapp.databinding.HomePageFragmentBinding;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.models.MediaStackResponse;
@@ -27,13 +24,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomePage extends Fragment {
 
 
-    private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    List<RecyclerViewModel> articlecards;
     RecyclerViewAdapter adapter;
 
     private HomePageFragmentBinding binding;
@@ -54,38 +49,7 @@ public class HomePage extends Fragment {
         return root;
     }
 
-    private void initData() {
-
-
-
-
-    }
-
-
-    private void initRecyclerView() {
-
-
-        articlecards=new ArrayList<>();
-
-
-        articlecards.add(new RecyclerViewModel(R.drawable.levi_bald,"abc.com","lets get it",12));
-        articlecards.add(new RecyclerViewModel(R.drawable.levi_bald,"abc.com","lets get it",12));
-
-
-        recyclerView=binding.recyclerview;
-        layoutManager= new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter=new RecyclerViewAdapter(articlecards);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-    }
-
     private void setUpButtons() {
-//        binding.btnOpenArticle.setOnClickListener(viewModel::testFireStoreRead);
-        binding.btnOpenArticle.setOnClickListener(this::openArticleCard);
-        binding.button.setOnClickListener(viewModel::openArticle);
         binding.searchButton.setOnClickListener(viewModel::searchButtonClicked);
     }
 
@@ -94,9 +58,8 @@ public class HomePage extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModal.class);
 
-//        getLatestNews();
         setUpButtons();
-        initRecyclerView();
+        getLatestNews();
     }
 
     private void openArticleCard(View onClick) {
@@ -111,19 +74,24 @@ public class HomePage extends Fragment {
 
     private void setUpRecyclerView(MediaStackResponse mediaStackResponse) {
         articles = mediaStackResponse.getArticles();
-        articles.stream()
-                .filter(Article::notContainsNull)
-                .limit(15)
-                .forEach(System.out::println);
-    }
 
-    private void openSearchPage(View view) {
-        Navigation.findNavController(view).navigate(R.id.homePage_to_searchPage);
+        RecyclerView recyclerView = binding.recyclerview;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new RecyclerViewAdapter(articles
+                .stream()
+                .filter(Article::notContainsNull)
+                .collect(Collectors.toList()));
+
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         binding = null;
     }
 }
