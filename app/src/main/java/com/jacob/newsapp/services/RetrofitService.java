@@ -13,16 +13,16 @@ public class RetrofitService {
 
     private static Retrofit retrofit;
 
-    public static ArticleAPI getInterface() {
-        if (retrofit == null) {
-            OkHttpClient okHttpClient = getOkHttpClient();
+    public static ArticleAPI create() {
+//        if (retrofit == null) {
+        OkHttpClient okHttpClient = getOkHttpClient();
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+//        }
         return retrofit.create(ArticleAPI.class);
     }
 

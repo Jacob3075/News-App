@@ -13,9 +13,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.jacob.newsapp.utilities.Constants.API_KEY;
+import static com.jacob.newsapp.utilities.Constants.LANGUAGE_ENGLISH;
+import static com.jacob.newsapp.utilities.Constants.PAGE_SIZE;
 
 public class ArticleRepository {
-    private static final String LANGUAGE_ENGLISH = "en";
     private static ArticleAPI articleAPI;
     private static ArticleRepository articleRepository;
     private final MutableLiveData<MediaStackResponse> newsBySource = new MutableLiveData<>();
@@ -24,7 +25,7 @@ public class ArticleRepository {
     private final MutableLiveData<MediaStackResponse> newsByKeyWord = new MutableLiveData<>();
 
     public ArticleRepository() {
-        articleAPI = RetrofitService.getInterface();
+        articleAPI = RetrofitService.create();
     }
 
     public static ArticleRepository getInstance() {
@@ -51,7 +52,7 @@ public class ArticleRepository {
     }
 
     public void getNewsBySource(String sources) {
-        articleAPI.getNewsFromSource(API_KEY, sources, LANGUAGE_ENGLISH)
+        articleAPI.getNewsFromSource(API_KEY, sources, LANGUAGE_ENGLISH, PAGE_SIZE, 0)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
@@ -67,25 +68,8 @@ public class ArticleRepository {
                 });
     }
 
-    public void getTrendingByNews() {
-        articleAPI.getTrendingNews(API_KEY, LANGUAGE_ENGLISH)
-                .enqueue(new Callback<MediaStackResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
-                        if (response.isSuccessful()) {
-                            latestNews.setValue(response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MediaStackResponse> call, @NonNull Throwable t) {
-                        System.out.println("ERROR: " + t.getMessage());
-                    }
-                });
-    }
-
     public void getNewsByCategory(String category) {
-        articleAPI.getNewsFromCategory(API_KEY, category, LANGUAGE_ENGLISH)
+        articleAPI.getNewsFromCategory(API_KEY, category, LANGUAGE_ENGLISH, PAGE_SIZE, 0)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {
@@ -102,7 +86,7 @@ public class ArticleRepository {
     }
 
     public void getNewsByKeyWord(String keyWord) {
-        articleAPI.getNewsByKeyWords(API_KEY, keyWord, LANGUAGE_ENGLISH)
+        articleAPI.getNewsByKeyWords(API_KEY, keyWord, LANGUAGE_ENGLISH, PAGE_SIZE, 0)
                 .enqueue(new Callback<MediaStackResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MediaStackResponse> call, @NonNull Response<MediaStackResponse> response) {

@@ -15,8 +15,6 @@
         <activity android:name=".ui.activities.SignUpScreen" />
         <activity android:name=".ui.activities.LoginScreen" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ActivitySavedSource" />
-        <activity android:name=".ActivitySavedCategory" />
         <activity android:name=".ui.ArticleCard" />
         <activity android:name=".ui.activities.SplashScreen">
             <intent-filter>

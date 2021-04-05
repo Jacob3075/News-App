@@ -3,6 +3,8 @@ package com.jacob.newsapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Article {
 
     @Expose
@@ -153,5 +155,17 @@ public class Article {
                 url == null ||
                 image == null ||
                 category == null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(author, article.author) &&
+                Objects.equals(title, article.title) &&
+                Objects.equals(source, article.source) &&
+                Objects.equals(url, article.url) &&
+                Objects.equals(publishedAt, article.publishedAt);
     }
 }

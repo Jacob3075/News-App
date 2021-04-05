@@ -29,8 +29,8 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     private void setUpButtons() {
-        binding.btnHomePage.setOnClickListener(this::openHomePage);
-        binding.btnSignUpPage.setOnClickListener(this::openSignUpPagek);
+        binding.homePage.setOnClickListener(this::openHomePage);
+//        binding.btnSignUpPage.setOnClickListener(this::openSignUpPagek);
     }
 
     private void openHomePage(View view) {
