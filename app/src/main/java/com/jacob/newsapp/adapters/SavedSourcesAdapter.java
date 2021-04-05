@@ -1,6 +1,5 @@
 package com.jacob.newsapp.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,38 +10,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacob.newsapp.R;
 
-public class SavedSourcesAdapter extends RecyclerView.Adapter<SavedSourcesAdapter.MyViewHolder> {
+import java.util.ArrayList;
 
-    String[] data;
-    Context context;
+public class SavedSourcesAdapter extends RecyclerView.Adapter<SavedSourcesAdapter.SavedSourceRowItemViewHolder> {
 
-    public SavedSourcesAdapter(Context ct, String[] s1) {
-        context = ct;
-        data = s1;
+    private final ArrayList<String> data;
+
+    public SavedSourcesAdapter(ArrayList<String> data) {
+        this.data = data;
     }
 
     @NonNull
     @Override
-    public SavedSourcesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.activity_saved_source, parent, false);
-        return new MyViewHolder(view);
+    public SavedSourceRowItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_source_row_item, parent, false);
+        return new SavedSourceRowItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SavedSourcesAdapter.MyViewHolder holder, int position) {
-        holder.txtSource.setText(data[position]);
+    public void onBindViewHolder(@NonNull SavedSourceRowItemViewHolder holder, int position) {
+        holder.txtSource.setText(data.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return data.length;
+        return data.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class SavedSourceRowItemViewHolder extends RecyclerView.ViewHolder {
         TextView txtSource;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public SavedSourceRowItemViewHolder(@NonNull View itemView) {
             super(itemView);
             txtSource = itemView.findViewById(R.id.txtSource);
         }
