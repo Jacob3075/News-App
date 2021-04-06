@@ -9,14 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.jacob.newsapp.adapters.PagedNewsListAdapter;
 import com.jacob.newsapp.databinding.SearchArticlesTabFragmentBinding;
-import com.jacob.newsapp.models.Article;
-import com.jacob.newsapp.models.MediaStackResponse;
 import com.jacob.newsapp.viewmodels.SearchPageViewModel;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SearchArticlesTab extends Fragment {
 
@@ -37,37 +35,19 @@ public class SearchArticlesTab extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		viewModel = new ViewModelProvider(requireActivity()).get(SearchPageViewModel.class);
 
-		setUpTextView();
 		setUpRecyclerView();
 	}
 
 	private void setUpRecyclerView() {
-		viewModel.getNewsByKeyWord()
-		         .observe(getViewLifecycleOwner(), this::updateRecyclerViewWithResults);
-	}
+		RecyclerView        recyclerView  = binding.recyclerView;
+		LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+		layoutManager.setOrientation(RecyclerView.VERTICAL);
+		recyclerView.setLayoutManager(layoutManager);
 
-	private void setUpTextView() {
-		viewModel.getSubmitted().observe(getViewLifecycleOwner(), this::submitQueryIfNotEmpty);
-	}
+		PagedNewsListAdapter adapter = new PagedNewsListAdapter();
 
-	private void submitQueryIfNotEmpty(Boolean submitted) {
-		String keywordQuery = viewModel.getQuery().getValue();
-		if (submitted && !keywordQuery.isEmpty()) {
-			viewModel.searchNewsByKeyWord(keywordQuery);
-		} else if (keywordQuery.isEmpty()) {
-//            Toast.makeText(getContext(), "Enter a search query", Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	private void updateRecyclerViewWithResults(MediaStackResponse mediaStackResponse) {
-		List<Article> articles = mediaStackResponse.getArticles();
-		List<String> collect = articles.stream()
-		                               .filter(Article::notContainsNull)
-		                               .limit(15)
-		                               .map(Article::getTitle)
-		                               .collect(Collectors.toList());
-//                .forEach(x -> Log.d("ARTICLE", x.getTitle() + ", " + x.getSource() + ", " + x.getCategory()));
-		binding.textView.setText(collect.toString());
+		viewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
+		recyclerView.setAdapter(adapter);
 	}
 
 	@Override

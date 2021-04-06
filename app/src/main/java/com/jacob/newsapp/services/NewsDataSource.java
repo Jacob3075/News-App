@@ -80,7 +80,7 @@ public class NewsDataSource extends PageKeyedDataSource<Integer, Article> {
 				categoryQuery,
 				LANGUAGE_ENGLISH,
 				PAGE_SIZE,
-				0)
+				params.key)
 		          .enqueue(new Callback<MediaStackResponse>() {
 			                   @Override
 			                   public void onResponse(@NotNull Call<MediaStackResponse> call,

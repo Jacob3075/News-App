@@ -1,6 +1,7 @@
 package com.jacob.newsapp.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,36 @@ import com.jacob.newsapp.viewmodels.SearchPageViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class SearchPage extends Fragment {
+
+	private void setUpSearchBar() {
+		SearchView searchView = binding.searchView;
+
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				int          currentPage = binding.viewPager.getCurrentItem();
+				SEARCH_PAGES search_page = SEARCH_PAGES.valueOf(currentPage);
+				viewModel.setQuery(new Pair<>(search_page, query));
+				Toast.makeText(getContext(), "Submitted, " + currentPage, Toast.LENGTH_SHORT)
+				     .show();
+				viewModel.setSubmitted(true);
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newQuery) {
+				viewModel.setSubmitted(false);
+				return false;
+			}
+		});
+	}
+
 	private SearchPageFragmentBinding binding;
 	private SearchPageViewModel       viewModel;
 
@@ -52,24 +80,20 @@ public class SearchPage extends Fragment {
 		setUpSearchBar();
 	}
 
-	private void setUpSearchBar() {
-		SearchView searchView = binding.searchView;
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				viewModel.setQuery(query);
-				Toast.makeText(getContext(), "Submitted", Toast.LENGTH_SHORT).show();
-				viewModel.setSubmitted(true);
-				return false;
-			}
+	public enum SEARCH_PAGES {
+		KEYWORDS(0), SOURCES(1), CATEGORIES(2);
+		private final int value;
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				viewModel.setQuery(newText);
-				viewModel.setSubmitted(false);
-				return false;
-			}
-		});
+		SEARCH_PAGES(int value) {
+			this.value = value;
+		}
+
+		public static SEARCH_PAGES valueOf(int value) {
+			return Arrays.stream(values())
+			             .filter(page -> page.value == value)
+			             .findFirst()
+			             .get();
+		}
 	}
 
 	private void setUpTabBar() {
