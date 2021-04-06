@@ -6,17 +6,30 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jacob.newsapp.models.User;
 
+import org.jetbrains.annotations.NotNull;
+
 public class FirebaseAuthRepository {
-	private static final String              USERS        = "users";
-	private final        FirebaseAuth        firebaseAuth = FirebaseAuth.getInstance();
-	private final        FirebaseFirestore   rootRef      = FirebaseFirestore.getInstance();
-	private final        CollectionReference usersRef     = rootRef.collection(USERS);
+
+	private static final String                 USERS        = "users";
+	private static       FirebaseAuthRepository firebaseAuthRepository;
+	private final        FirebaseAuth           firebaseAuth = FirebaseAuth.getInstance();
+	private final        MutableLiveData<User>  userLiveData = new MutableLiveData<>();
+
+	private FirebaseAuthRepository() {
+
+	}
+
+	public static FirebaseAuthRepository getInstance() {
+		if (firebaseAuthRepository == null) {
+			firebaseAuthRepository = new FirebaseAuthRepository();
+		}
+		return firebaseAuthRepository;
+	}
 
 	public LiveData<User> firebaseSignInWithGoogle(AuthCredential googleAuthCredential) {
 		MutableLiveData<User> authenticatedUserLiveData = new MutableLiveData<>();
@@ -27,23 +40,28 @@ public class FirebaseAuthRepository {
 				                            .isNewUser();
 				FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 				if (firebaseUser != null) {
-					String uid   = firebaseUser.getUid();
-					String name  = firebaseUser.getDisplayName();
-					String email = firebaseUser.getEmail();
-					User   user  = new User(uid, name, email);
+					User user = getUserFromFireBaseUser(firebaseUser);
 					user.setNew(isNewUser);
 					authenticatedUserLiveData.setValue(user);
 				}
-			} else {
-//				logErrorMessage(authTask.getException().getMessage());
 			}
 		});
 		return authenticatedUserLiveData;
 	}
 
+	@NotNull
+	private User getUserFromFireBaseUser(FirebaseUser firebaseUser) {
+		String uid      = firebaseUser.getUid();
+		String name     = firebaseUser.getDisplayName();
+		String email    = firebaseUser.getEmail();
+		String photoUrl = firebaseUser.getPhotoUrl().toString();
+		return new User(uid, name, email, photoUrl);
+	}
+
 	public LiveData<User> createUserInFireStoreIfNotExists(User authenticatedUser) {
-		MutableLiveData<User> newUserLiveData = new MutableLiveData<>();
-		DocumentReference     userRefByUid    = usersRef.document(authenticatedUser.getUid());
+		DocumentReference userRefByUid = FirebaseFirestore.getInstance()
+		                                                  .collection(USERS)
+		                                                  .document(authenticatedUser.getUid());
 		userRefByUid.get()
 		            .addOnCompleteListener(uidTask -> {
 			            if (uidTask.isSuccessful()) {
@@ -53,23 +71,28 @@ public class FirebaseAuthRepository {
 					                        .addOnCompleteListener(userCreationTask -> {
 						                        if (userCreationTask.isSuccessful()) {
 							                        authenticatedUser.setCreated(true);
-							                        newUserLiveData.setValue(authenticatedUser);
+							                        userLiveData.setValue(authenticatedUser);
 						                        } else {
-//							logErrorMessage(userCreationTask.getException().getMessage());
 						                        }
 					                        });
 				            } else {
-					            newUserLiveData.setValue(authenticatedUser);
+					            userLiveData.setValue(authenticatedUser);
 				            }
-			            } else {
-//				logErrorMessage(uidTask.getException().getMessage());
 			            }
 		            });
-		return newUserLiveData;
+		return userLiveData;
+	}
+
+	public LiveData<User> getUserLiveData() {
+		return userLiveData;
 	}
 
 	public boolean isUserLoggedIn() {
-		return firebaseAuth.getCurrentUser() != null;
+		boolean isUserLoggedIn = firebaseAuth.getCurrentUser() != null;
+		if (isUserLoggedIn) {
+			userLiveData.setValue(getUserFromFireBaseUser(firebaseAuth.getCurrentUser()));
+		}
+		return isUserLoggedIn;
 	}
 
 	public void logout() {

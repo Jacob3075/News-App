@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ProfilePageFragmentBinding;
+import com.jacob.newsapp.models.User;
 import com.jacob.newsapp.ui.activities.LoginScreen;
 import com.jacob.newsapp.viewmodels.ProfilePageViewModel;
 
@@ -34,21 +34,18 @@ public class ProfilePage extends Fragment {
 	                         ViewGroup container,
 	                         Bundle savedInstanceState) {
 		binding = ProfilePageFragmentBinding.inflate(inflater, container, false);
-
-		ConstraintLayout root = binding.getRoot();
-
-		setUpButtons();
-
-		return root;
+		return binding.getRoot();
 	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		viewModel = new ViewModelProvider(this).get(ProfilePageViewModel.class);
+		setUpUI();
 	}
 
-	private void setUpButtons() {
+	private void setUpUI() {
+		viewModel.getLoggedInUser().observe(getViewLifecycleOwner(), this::setDetails);
 		binding.savedCategoriesButton.setOnClickListener(this::openSavedCategoriesPage);
 		binding.savedSourcesButton.setOnClickListener(this::openSavedSourcesPage);
 		binding.logoutButton.setOnClickListener(this::logout);
@@ -60,6 +57,13 @@ public class ProfilePage extends Fragment {
 
 	private void openSavedSourcesPage(View view) {
 		Navigation.findNavController(view).navigate(R.id.profilePage_to_savedCategoriesPage);
+	}
+
+	private void setDetails(User user) {
+		System.out.println("user.getName() = " + user.getName());
+//		TODO: GLIDE
+//		binding.profileImage.
+		binding.userName.setText(user.getName());
 	}
 
 	private void logout(View view) {

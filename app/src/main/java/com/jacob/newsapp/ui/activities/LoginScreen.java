@@ -72,12 +72,7 @@ public class LoginScreen extends AppCompatActivity {
 
 	private void createNewUser(User authenticatedUser) {
 		viewModel.createUser(authenticatedUser);
-		viewModel.getCreatedUserLiveData().observe(this, user -> {
-			if (user.isCreated()) {
-//				toastMessage(user.name);
-			}
-			openHomePage();
-		});
+		viewModel.getCreatedUserLiveData().observe(this, user -> openHomePage());
 	}
 
 	private void initGoogleSignInClient() {

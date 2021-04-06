@@ -10,21 +10,21 @@ import com.jacob.newsapp.models.User;
 import com.jacob.newsapp.repositories.FirebaseAuthRepository;
 
 public class LoginScreenViewModel extends AndroidViewModel {
-	private final FirebaseAuthRepository authRepository;
+	private final FirebaseAuthRepository firebaseAuthRepository;
 	private       LiveData<User>         authenticatedUserLiveData;
 	private       LiveData<User>         createdUserLiveData;
 
 	public LoginScreenViewModel(Application application) {
 		super(application);
-		authRepository = new FirebaseAuthRepository();
+		firebaseAuthRepository = FirebaseAuthRepository.getInstance();
 	}
 
 	public void signInWithGoogle(AuthCredential googleAuthCredential) {
-		authenticatedUserLiveData = authRepository.firebaseSignInWithGoogle(googleAuthCredential);
+		authenticatedUserLiveData = firebaseAuthRepository.firebaseSignInWithGoogle(googleAuthCredential);
 	}
 
 	public void createUser(User authenticatedUser) {
-		createdUserLiveData = authRepository.createUserInFireStoreIfNotExists(authenticatedUser);
+		createdUserLiveData = firebaseAuthRepository.createUserInFireStoreIfNotExists(authenticatedUser);
 	}
 
 	public LiveData<User> getAuthenticatedUserLiveData() {
