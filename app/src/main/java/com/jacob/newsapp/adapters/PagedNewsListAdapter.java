@@ -3,7 +3,7 @@ package com.jacob.newsapp.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,7 +56,7 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
 		private final ImageView        articleImage;
 		private final TextView         articleTitle;
 		private final TextView         articleSource;
-		private final Button           saveArticle;
+		private final ImageButton      saveArticle;
 
 		public NewsArticleItemViewHolder(@NonNull View itemView) {
 			super(itemView);
