@@ -91,11 +91,13 @@ public class LoginScreen extends AppCompatActivity {
 
 	private void signIn(View view) {
 		Intent signInIntent = googleSignInClient.getSignInIntent();
+		googleSignInClient.signOut();
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
 
 	private void setUpButtons() {
 		binding.loginButton.setOnClickListener(this::signIn);
+		binding.signUpButton.setOnClickListener(this::signIn);
 		binding.homePage.setOnClickListener(this::openHomePage);
 	}
 
