@@ -12,7 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jacob.newsapp.models.User;
 
-public class AuthRepository {
+public class FirebaseAuthRepository {
 	private static final String              USERS        = "users";
 	private final        FirebaseAuth        firebaseAuth = FirebaseAuth.getInstance();
 	private final        FirebaseFirestore   rootRef      = FirebaseFirestore.getInstance();
@@ -70,5 +70,9 @@ public class AuthRepository {
 
 	public boolean isUserLoggedIn() {
 		return firebaseAuth.getCurrentUser() != null;
+	}
+
+	public void logout() {
+		firebaseAuth.signOut();
 	}
 }
