@@ -1,5 +1,6 @@
 package com.jacob.newsapp.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,42 +11,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacob.newsapp.R;
 
-import java.util.ArrayList;
+public class SavedCategoriesAdapter extends RecyclerView.Adapter<SavedCategoriesAdapter.MyViewHolder> {
 
-public class SavedCategoriesAdapter
-		extends RecyclerView.Adapter<SavedCategoriesAdapter.SaveCategoryRowItemViewHolder> {
+    String[] data;
+    Context context;
 
-	private final ArrayList<String> data;
+    public SavedCategoriesAdapter(Context ct, String[] s1) {
+        context = ct;
+        data = s1;
+    }
 
-	public SavedCategoriesAdapter(ArrayList<String> data) {
-		this.data = data;
-	}
+    @NonNull
+    @Override
+    public SavedCategoriesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.activity_saved_category, parent, false);
+        return new MyViewHolder(view);
+    }
 
-	@NonNull
-	@Override
-	public SaveCategoryRowItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-	                                                        int viewType) {
-		View view = LayoutInflater.from(parent.getContext())
-		                          .inflate(R.layout.saved_category_row_item, parent, false);
-		return new SaveCategoryRowItemViewHolder(view);
-	}
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.txtCategory.setText(data[position]);
+    }
 
-	@Override
-	public void onBindViewHolder(@NonNull SaveCategoryRowItemViewHolder holder, int position) {
-		holder.txtCategory.setText(data.get(position));
-	}
+    @Override
+    public int getItemCount() {
+        return data.length;
+    }
 
-	@Override
-	public int getItemCount() {
-		return data.size();
-	}
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCategory;
 
-	public static class SaveCategoryRowItemViewHolder extends RecyclerView.ViewHolder {
-		TextView txtCategory;
-
-		public SaveCategoryRowItemViewHolder(@NonNull View itemView) {
-			super(itemView);
-			txtCategory = itemView.findViewById(R.id.txtCategory);
-		}
-	}
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtCategory = itemView.findViewById(R.id.txtCategory);
+        }
+    }
 }
