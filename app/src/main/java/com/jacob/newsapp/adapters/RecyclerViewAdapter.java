@@ -64,7 +64,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 		public void setData(Article article) {
 //            TODO: GLIDE
-//            articleImg.
+
+
 			title.setText(article.getTitle());
 			source.setText(article.getSource());
 		}

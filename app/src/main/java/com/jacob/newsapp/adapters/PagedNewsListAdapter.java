@@ -13,6 +13,7 @@ import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.models.Article;
@@ -53,6 +54,7 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
 		private final MaterialCardView root;
 		private final ConstraintLayout rootLayout;
 		//        TODO: GLIDE
+
 		private final ImageView        articleImage;
 		private final TextView         articleTitle;
 		private final TextView         articleSource;
@@ -71,7 +73,7 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
 		public void bind(Article item) {
 			articleTitle.setText(item.getTitle());
 			articleSource.setText(item.getSource());
-
+			//Glide.with(itemView).load(item.getImage()).into(articleImage);
 			root.setOnClickListener(view -> {
 			});
 			saveArticle.setOnClickListener(view -> {
