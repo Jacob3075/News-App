@@ -53,8 +53,6 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
 	public static class NewsArticleItemViewHolder extends RecyclerView.ViewHolder {
 		private final MaterialCardView root;
 		private final ConstraintLayout rootLayout;
-		//        TODO: GLIDE
-
 		private final ImageView        articleImage;
 		private final TextView         articleTitle;
 		private final TextView         articleSource;
@@ -73,7 +71,11 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
 		public void bind(Article item) {
 			articleTitle.setText(item.getTitle());
 			articleSource.setText(item.getSource());
-			//Glide.with(itemView).load(item.getImage()).into(articleImage);
+			Glide.with(itemView)
+			     .load(item.getImage())
+			     .fitCenter()
+			     .into(articleImage);
+
 			root.setOnClickListener(view -> {
 			});
 			saveArticle.setOnClickListener(view -> {
