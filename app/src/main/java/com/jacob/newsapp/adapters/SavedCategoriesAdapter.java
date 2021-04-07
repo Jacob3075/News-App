@@ -1,6 +1,5 @@
 package com.jacob.newsapp.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,40 +10,42 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacob.newsapp.R;
 
-public class SavedCategoriesAdapter extends RecyclerView.Adapter<SavedCategoriesAdapter.MyViewHolder> {
+import java.util.ArrayList;
 
-    String[] data;
-    Context context;
+public class SavedCategoriesAdapter
+		extends RecyclerView.Adapter<SavedCategoriesAdapter.SaveCategoryRowItemViewHolder> {
 
-    public SavedCategoriesAdapter(Context ct, String[] s1) {
-        context = ct;
-        data = s1;
-    }
+	private final ArrayList<String> data;
 
-    @NonNull
-    @Override
-    public SavedCategoriesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.activity_saved_category, parent, false);
-        return new MyViewHolder(view);
-    }
+	public SavedCategoriesAdapter(ArrayList<String> data) {
+		this.data = data;
+	}
 
-    @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.txtCategory.setText(data[position]);
-    }
+	@NonNull
+	@Override
+	public SaveCategoryRowItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+	                                                        int viewType) {
+		View view = LayoutInflater.from(parent.getContext())
+		                          .inflate(R.layout.saved_category_row_item, parent, false);
+		return new SaveCategoryRowItemViewHolder(view);
+	}
 
-    @Override
-    public int getItemCount() {
-        return data.length;
-    }
+	@Override
+	public void onBindViewHolder(@NonNull SaveCategoryRowItemViewHolder holder, int position) {
+		holder.txtCategory.setText(data.get(position));
+	}
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCategory;
+	@Override
+	public int getItemCount() {
+		return data.size();
+	}
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtCategory = itemView.findViewById(R.id.txtCategory);
-        }
-    }
+	public static class SaveCategoryRowItemViewHolder extends RecyclerView.ViewHolder {
+		TextView txtCategory;
+
+		public SaveCategoryRowItemViewHolder(@NonNull View itemView) {
+			super(itemView);
+			txtCategory = itemView.findViewById(R.id.txtCategory);
+		}
+	}
 }
