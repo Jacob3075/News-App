@@ -28,7 +28,7 @@ public class FirebaseAuthRepository {
         return firebaseAuthRepository;
     }
 
-    public void register(String email, String password, String userName) {
+    public void register(String userName, String email, String password) {
         firebaseAuth
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
@@ -43,6 +43,34 @@ public class FirebaseAuthRepository {
                             } else {
                                 authenticationResultLiveData.setValue(false);
                             }
+                        });
+    }
+
+    public void login(String email, String password) {
+        firebaseAuth
+                .signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                        authResultTask -> {
+                            if (!authResultTask.isSuccessful()) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            AuthResult authResultTaskResult = authResultTask.getResult();
+                            if (authResultTaskResult == null) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            FirebaseUser firebaseUser = authResultTaskResult.getUser();
+                            if (firebaseUser == null) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            User user = getUserFromFireBaseUser(firebaseUser);
+                            userLiveData.setValue(user);
+                            authenticationResultLiveData.setValue(true);
                         });
     }
 
@@ -83,34 +111,6 @@ public class FirebaseAuthRepository {
                                                     authenticationResultLiveData.setValue(true);
                                                 }
                                             });
-                        });
-    }
-
-    public void login(String email, String password) {
-        firebaseAuth
-                .signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                        authResultTask -> {
-                            if (!authResultTask.isSuccessful()) {
-                                authenticationResultLiveData.setValue(false);
-                                return;
-                            }
-
-                            AuthResult authResultTaskResult = authResultTask.getResult();
-                            if (authResultTaskResult == null) {
-                                authenticationResultLiveData.setValue(false);
-                                return;
-                            }
-
-                            FirebaseUser firebaseUser = authResultTaskResult.getUser();
-                            if (firebaseUser == null) {
-                                authenticationResultLiveData.setValue(false);
-                                return;
-                            }
-
-                            User user = getUserFromFireBaseUser(firebaseUser);
-                            userLiveData.setValue(user);
-                            authenticationResultLiveData.setValue(true);
                         });
     }
 

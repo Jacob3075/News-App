@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import com.bumptech.glide.Glide;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ProfilePageFragmentBinding;
 import com.jacob.newsapp.models.User;
@@ -49,7 +48,7 @@ public class ProfilePage extends Fragment {
     }
 
     private void setDetails(User user) {
-        Glide.with(this).load(user.getPhotoUrl()).circleCrop().into(binding.profileImage);
+        //        Glide.with(this).load(user.getPhotoUrl()).circleCrop().into(binding.profileImage);
         binding.userName.setText(user.getName());
     }
 
