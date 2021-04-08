@@ -8,14 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SavedCategoriesAdapter
         extends RecyclerView.Adapter<SavedCategoriesAdapter.SaveCategoryRowItemViewHolder> {
 
-    private final ArrayList<String> data;
+    private final List<String> data;
 
-    public SavedCategoriesAdapter(ArrayList<String> data) {
+    public SavedCategoriesAdapter(List<String> data) {
         this.data = data;
     }
 

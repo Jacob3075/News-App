@@ -57,15 +57,7 @@ public class Pagination {
     @NotNull
     @Override
     public String toString() {
-        return "Pagination{"
-                + "limit="
-                + limit
-                + ", offset="
-                + offset
-                + ", count="
-                + count
-                + ", total="
-                + total
-                + '}';
+        return String.format(
+                "Pagination{limit=%d, offset=%d, count=%d, total=%d}", limit, offset, count, total);
     }
 }

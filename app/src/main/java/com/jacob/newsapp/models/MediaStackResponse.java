@@ -35,6 +35,7 @@ public class MediaStackResponse {
     @NotNull
     @Override
     public String toString() {
-        return "MediaStackResponse{" + "pagination=" + pagination + ", articles=" + articles + '}';
+        return String.format(
+                "MediaStackResponse{pagination=%s, articles=%s}", pagination, articles);
     }
 }

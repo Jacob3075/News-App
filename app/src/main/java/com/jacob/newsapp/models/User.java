@@ -10,7 +10,8 @@ public class User implements Serializable {
     private final String email;
     private final String photoUrl;
     @Exclude private boolean isAuthenticated;
-    @Exclude private boolean isNew, isCreated;
+    @Exclude private boolean isNew;
+    @Exclude private boolean isCreated;
 
     public User(String uid, String name, String email, String photoUrl) {
         this.uid = uid;
@@ -45,5 +46,9 @@ public class User implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isCreated() {
+        return isCreated;
     }
 }

@@ -15,7 +15,6 @@ public class SearchPageViewModel extends ViewModel {
 
     private final MutableLiveData<Pair<SearchPage.SEARCH_PAGES, String>> query =
             new MediatorLiveData<>();
-    private final MutableLiveData<Boolean> submitted = new MutableLiveData<>();
     private LiveData<PagedList<Article>> pagedListLiveData;
 
     public SearchPageViewModel() {
@@ -64,18 +63,6 @@ public class SearchPageViewModel extends ViewModel {
 
     public LiveData<PagedList<Article>> getPagedListLiveData() {
         return pagedListLiveData;
-    }
-
-    public LiveData<Boolean> getSubmitted() {
-        return submitted;
-    }
-
-    public void setSubmitted(boolean newSubmittedValue) {
-        submitted.setValue(newSubmittedValue);
-    }
-
-    public LiveData<Pair<SearchPage.SEARCH_PAGES, String>> getQuery() {
-        return query;
     }
 
     public void setQuery(Pair<SearchPage.SEARCH_PAGES, String> newQuery) {

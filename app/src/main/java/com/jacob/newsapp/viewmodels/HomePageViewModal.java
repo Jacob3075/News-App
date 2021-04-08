@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.services.NewsDataFactory;
@@ -15,8 +14,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class HomePageViewModal extends ViewModel {
-
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LiveData<PagedList<Article>> pagedListLiveData;
 
     public HomePageViewModal() {
@@ -45,9 +42,5 @@ public class HomePageViewModal extends ViewModel {
 
     public void searchButtonClicked(View view) {
         Navigation.findNavController(view).navigate(R.id.homePage_to_searchPage);
-    }
-
-    public void openArticle(View view) {
-        Navigation.findNavController(view).navigate(R.id.homePage_to_articleViewer);
     }
 }

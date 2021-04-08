@@ -10,7 +10,10 @@ import static com.jacob.newsapp.utilities.Constants.BASE_URL;
 
 public class RetrofitService {
 
+    private RetrofitService() {}
+
     public static ArticleAPI create() {
+
         OkHttpClient okHttpClient = getOkHttpClient();
 
         Retrofit retrofit =

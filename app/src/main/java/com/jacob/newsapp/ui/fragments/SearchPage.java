@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -29,11 +28,6 @@ public class SearchPage extends Fragment {
 
     private SearchPageFragmentBinding binding;
     private SearchPageViewModel viewModel;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(
@@ -62,20 +56,13 @@ public class SearchPage extends Fragment {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         int currentPage = binding.viewPager.getCurrentItem();
-                        SEARCH_PAGES search_page = SEARCH_PAGES.valueOf(currentPage);
-                        viewModel.setQuery(new Pair<>(search_page, query));
-                        Toast.makeText(
-                                        getContext(),
-                                        "Submitted, " + currentPage,
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                        viewModel.setSubmitted(true);
+                        SEARCH_PAGES searchPage = SEARCH_PAGES.valueOf(currentPage);
+                        viewModel.setQuery(new Pair<>(searchPage, query));
                         return false;
                     }
 
                     @Override
                     public boolean onQueryTextChange(String newQuery) {
-                        viewModel.setSubmitted(false);
                         return false;
                     }
                 });

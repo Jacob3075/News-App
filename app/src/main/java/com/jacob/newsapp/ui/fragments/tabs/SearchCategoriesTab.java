@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,9 +25,7 @@ public class SearchCategoriesTab extends Fragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         binding = SearchCategoriesTabFragmentBinding.inflate(inflater, container, false);
-        ConstraintLayout root = binding.getRoot();
-
-        return root;
+        return binding.getRoot();
     }
 
     @Override

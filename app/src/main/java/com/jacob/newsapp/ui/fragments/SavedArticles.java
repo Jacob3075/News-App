@@ -20,11 +20,6 @@ public class SavedArticles extends Fragment {
     private SavedArticlesViewModel viewModel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(
             @NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = SavedArticlesFragmentBinding.inflate(inflater, container, false);

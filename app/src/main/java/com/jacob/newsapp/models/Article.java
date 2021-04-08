@@ -2,6 +2,7 @@ package com.jacob.newsapp.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -152,39 +153,21 @@ public class Article {
                 && Objects.equals(publishedAt, article.publishedAt);
     }
 
+    @NotNull
     @Override
     public String toString() {
-        return "Article{"
-                + "author='"
-                + author
-                + '\''
-                + ", title='"
-                + title
-                + '\''
-                + ", description='"
-                + description
-                + '\''
-                + ", source='"
-                + source
-                + '\''
-                + ", url='"
-                + url
-                + '\''
-                + ", image='"
-                + image
-                + '\''
-                + ", category='"
-                + category
-                + '\''
-                + ", language='"
-                + language
-                + '\''
-                + ", country='"
-                + country
-                + '\''
-                + ", publishedAt='"
-                + publishedAt
-                + '\''
-                + '}';
+        return String.format(
+                "Article{author='%s', title='%s', description='%s', source='%s', url='%s', image='%s', category='%s',"
+                        + " language='%s', country='%s', publishedAt='%s'}",
+                author,
+                title,
+                description,
+                source,
+                url,
+                image,
+                category,
+                language,
+                country,
+                publishedAt);
     }
 }
