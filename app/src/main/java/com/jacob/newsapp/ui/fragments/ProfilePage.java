@@ -22,11 +22,6 @@ public class ProfilePage extends Fragment {
     private ProfilePageViewModel viewModel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(
             @NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = ProfilePageFragmentBinding.inflate(inflater, container, false);
@@ -48,7 +43,6 @@ public class ProfilePage extends Fragment {
     }
 
     private void setDetails(User user) {
-        //        Glide.with(this).load(user.getPhotoUrl()).circleCrop().into(binding.profileImage);
         binding.userName.setText(user.getName());
     }
 
