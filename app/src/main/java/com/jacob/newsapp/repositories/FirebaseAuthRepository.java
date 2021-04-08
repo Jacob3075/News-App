@@ -2,7 +2,7 @@ package com.jacob.newsapp.repositories;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,6 +17,7 @@ public class FirebaseAuthRepository {
     private static FirebaseAuthRepository firebaseAuthRepository;
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final MutableLiveData<User> userLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> authenticationResultLiveData = new MutableLiveData<>();
 
     private FirebaseAuthRepository() {}
 
@@ -27,36 +28,33 @@ public class FirebaseAuthRepository {
         return firebaseAuthRepository;
     }
 
-    public LiveData<User> firebaseSignInWithGoogle(AuthCredential googleAuthCredential) {
-        MutableLiveData<User> authenticatedUserLiveData = new MutableLiveData<>();
+    public void register(String email, String password, String userName) {
         firebaseAuth
-                .signInWithCredential(googleAuthCredential)
+                .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
-                        authTask -> {
-                            if (authTask.isSuccessful()) {
-                                boolean isNewUser =
-                                        authTask.getResult().getAdditionalUserInfo().isNewUser();
-                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                if (firebaseUser != null) {
-                                    User user = getUserFromFireBaseUser(firebaseUser);
-                                    user.setNew(isNewUser);
-                                    authenticatedUserLiveData.setValue(user);
+                        task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                                if (currentUser != null) {
+                                    User newUser = getUserFromFireBaseUser(currentUser);
+                                    newUser.setName(userName);
+                                    createUserInFireStoreIfNotExists(newUser);
                                 }
+                            } else {
+                                authenticationResultLiveData.setValue(false);
                             }
                         });
-        return authenticatedUserLiveData;
     }
 
     @NotNull
-    private User getUserFromFireBaseUser(FirebaseUser firebaseUser) {
+    private User getUserFromFireBaseUser(@NotNull FirebaseUser firebaseUser) {
         String uid = firebaseUser.getUid();
         String name = firebaseUser.getDisplayName();
         String email = firebaseUser.getEmail();
-        String photoUrl = firebaseUser.getPhotoUrl().toString();
-        return new User(uid, name, email, photoUrl);
+        return new User(uid, name, email);
     }
 
-    public LiveData<User> createUserInFireStoreIfNotExists(User authenticatedUser) {
+    public void createUserInFireStoreIfNotExists(@NotNull User authenticatedUser) {
         DocumentReference userRefByUid =
                 FirebaseFirestore.getInstance()
                         .collection(USERS)
@@ -65,30 +63,55 @@ public class FirebaseAuthRepository {
                 .get()
                 .addOnCompleteListener(
                         uidTask -> {
-                            if (uidTask.isSuccessful()) {
-                                DocumentSnapshot document = uidTask.getResult();
-                                if (!document.exists()) {
-                                    userRefByUid
-                                            .set(authenticatedUser)
-                                            .addOnCompleteListener(
-                                                    userCreationTask -> {
-                                                        if (userCreationTask.isSuccessful()) {
-                                                            authenticatedUser.setCreated(true);
-                                                            userLiveData.setValue(
-                                                                    authenticatedUser);
-                                                        } else {
-                                                        }
-                                                    });
-                                } else {
-                                    userLiveData.setValue(authenticatedUser);
-                                }
+                            if (!uidTask.isSuccessful()) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
                             }
+                            DocumentSnapshot document = uidTask.getResult();
+                            if (document == null) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            userRefByUid
+                                    .set(authenticatedUser)
+                                    .addOnCompleteListener(
+                                            userCreationTask -> {
+                                                if (userCreationTask.isSuccessful()) {
+                                                    authenticatedUser.setCreated(true);
+                                                    userLiveData.setValue(authenticatedUser);
+                                                    authenticationResultLiveData.setValue(true);
+                                                }
+                                            });
                         });
-        return userLiveData;
     }
 
-    public LiveData<User> getUserLiveData() {
-        return userLiveData;
+    public void login(String email, String password) {
+        firebaseAuth
+                .signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                        authResultTask -> {
+                            if (!authResultTask.isSuccessful()) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            AuthResult authResultTaskResult = authResultTask.getResult();
+                            if (authResultTaskResult == null) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            FirebaseUser firebaseUser = authResultTaskResult.getUser();
+                            if (firebaseUser == null) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+
+                            User user = getUserFromFireBaseUser(firebaseUser);
+                            userLiveData.setValue(user);
+                            authenticationResultLiveData.setValue(true);
+                        });
     }
 
     public boolean isUserLoggedIn() {
@@ -101,5 +124,13 @@ public class FirebaseAuthRepository {
 
     public void logout() {
         firebaseAuth.signOut();
+    }
+
+    public LiveData<User> getUserLiveData() {
+        return userLiveData;
+    }
+
+    public LiveData<Boolean> getAuthenticationResultLiveData() {
+        return authenticationResultLiveData;
     }
 }

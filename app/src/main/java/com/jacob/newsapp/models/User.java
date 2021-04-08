@@ -6,18 +6,16 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private final String uid;
-    private final String name;
+    private String name;
     private final String email;
-    private final String photoUrl;
     @Exclude private boolean isAuthenticated;
     @Exclude private boolean isNew;
     @Exclude private boolean isCreated;
 
-    public User(String uid, String name, String email, String photoUrl) {
+    public User(String uid, String name, String email) {
         this.uid = uid;
         this.name = name;
         this.email = email;
-        this.photoUrl = photoUrl;
     }
 
     public String getUid() {
@@ -40,15 +38,15 @@ public class User implements Serializable {
         isCreated = created;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public boolean isCreated() {
         return isCreated;
+    }
+
+    public void setName(String userName) {
+        name = userName;
     }
 }
