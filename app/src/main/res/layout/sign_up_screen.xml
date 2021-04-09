@@ -29,7 +29,6 @@
 			android:layout_height="0dp"
 			android:autofillHints=""
 			android:background="@drawable/bg_custom"
-			android:elevation="4dp"
 			android:hint="Enter User Name"
 			android:inputType="textPersonName"
 			android:padding="15dp"
@@ -43,7 +42,6 @@
 	<EditText
 			android:id="@+id/emailInput"
 			android:layout_width="0dp"
-			android:elevation="4dp"
 			android:layout_height="0dp"
 			android:autofillHints=""
 			android:background="@drawable/bg_custom"
@@ -61,7 +59,6 @@
 			android:id="@+id/passwordInput"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
-			android:elevation="4dp"
 			android:autofillHints=""
 			android:background="@drawable/bg_custom"
 			android:hint="Enter Password"

@@ -7,4 +7,5 @@ public class Constants {
     public static final String API_KEY = "4f2cf965eefe507ba80b8fe8678342f8";
     public static final String LANGUAGE_ENGLISH = "en";
     public static final int PAGE_SIZE = 25;
+    public static final String USERS = "users";
 }

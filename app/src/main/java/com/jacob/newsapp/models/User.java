@@ -1,16 +1,15 @@
 package com.jacob.newsapp.models;
 
-import com.google.firebase.firestore.Exclude;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private final String uid;
+    private String uid;
     private String name;
-    private final String email;
-    @Exclude private boolean isAuthenticated;
-    @Exclude private boolean isNew;
-    @Exclude private boolean isCreated;
+    private String email;
+
+    public User() {}
 
     public User(String uid, String name, String email) {
         this.uid = uid;
@@ -22,31 +21,29 @@ public class User implements Serializable {
         return uid;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getName() {
         return name;
     }
 
-    public boolean isNew() {
-        return isNew;
-    }
-
-    public void setNew(boolean aNew) {
-        isNew = aNew;
-    }
-
-    public void setCreated(boolean created) {
-        isCreated = created;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public boolean isCreated() {
-        return isCreated;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setName(String userName) {
-        name = userName;
+    @NotNull
+    @Override
+    public String toString() {
+        return String.format("User{uid='%s', name='%s', email='%s'}", uid, name, email);
     }
 }

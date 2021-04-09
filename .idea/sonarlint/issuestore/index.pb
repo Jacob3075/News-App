@@ -1,0 +1,21 @@
+
+|
+Lapp/src/main/java/com/jacob/newsapp/repositories/FirebaseAuthRepository.java,b/b/bb9acebf487899fba41690f0da09bd4fd7804268
+r
+Bapp/src/main/java/com/jacob/newsapp/ui/activities/LoginScreen.java,e/6/e6f2ca2ca22e4b41c9618d49e011cab500b16c1c
+y
+Iapp/src/main/java/com/jacob/newsapp/viewmodels/SignUpScreenViewModel.java,1/8/1839ac134d1f5f5a829338c323d2b732dbd6e435
+x
+Happ/src/main/java/com/jacob/newsapp/viewmodels/LoginScreenViewModel.java,9/0/9025dcbe0b86f70a81ce44dd0c8cef44694a3786
+q
+Aapp/src/main/java/com/jacob/newsapp/ui/fragments/ProfilePage.java,9/5/952490783a0860ba4b154db889bffca270d4e42b
+s
+Capp/src/main/java/com/jacob/newsapp/ui/activities/SignUpScreen.java,4/8/4875de671fd5104fbd1640801f3339d47ae6d296
+l
+<app/src/main/java/com/jacob/newsapp/utilities/Constants.java,c/1/c1f85bf3d2569174b7701cde0ff5bdb618794ab3
+d
+4app/src/main/java/com/jacob/newsapp/models/User.java,1/6/163eb01164a3f03f7325f04b0e05ffabf5b1e26d
+P
+ app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+@
+app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
