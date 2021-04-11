@@ -1,12 +1,14 @@
 package com.jacob.newsapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class Article {
+public class Article implements Parcelable {
 
     @Expose
     @SerializedName("author")
@@ -47,6 +49,32 @@ public class Article {
     @Expose
     @SerializedName("published_at")
     private String publishedAt;
+
+    public static final Creator<Article> CREATOR =
+            new Creator<Article>() {
+                @Override
+                public Article createFromParcel(Parcel in) {
+                    return new Article(in);
+                }
+
+                @Override
+                public Article[] newArray(int size) {
+                    return new Article[size];
+                }
+            };
+
+    protected Article(Parcel in) {
+        author = in.readString();
+        title = in.readString();
+        description = in.readString();
+        source = in.readString();
+        url = in.readString();
+        image = in.readString();
+        category = in.readString();
+        language = in.readString();
+        country = in.readString();
+        publishedAt = in.readString();
+    }
 
     public String getUrl() {
         return url;
@@ -169,5 +197,24 @@ public class Article {
                 language,
                 country,
                 publishedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(author);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(source);
+        dest.writeString(url);
+        dest.writeString(image);
+        dest.writeString(category);
+        dest.writeString(language);
+        dest.writeString(country);
+        dest.writeString(publishedAt);
     }
 }

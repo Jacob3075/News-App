@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.Navigation;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,9 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.models.Article;
+import com.jacob.newsapp.ui.fragments.HomePageDirections;
+import com.jacob.newsapp.ui.fragments.HomePageDirections.HomePageToArticleViewer;
+import org.jetbrains.annotations.NotNull;
 
 import static com.jacob.newsapp.adapters.PagedNewsListAdapter.NewsArticleItemViewHolder;
 
@@ -55,6 +59,7 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
         private final MaterialCardView root;
         private final ConstraintLayout rootLayout;
         private final ImageView articleImage;
+        private final View itemView;
         private final TextView articleTitle;
         private final TextView articleSource;
         private final ImageButton saveArticle;
@@ -67,14 +72,21 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
             articleSource = itemView.findViewById(R.id.tvSource);
             saveArticle = itemView.findViewById(R.id.btnSaveArticle);
             articleImage = itemView.findViewById(R.id.imgArticleImage);
+            this.itemView = itemView;
         }
 
-        public void bind(Article item) {
+        public void bind(@NotNull Article item) {
             articleTitle.setText(item.getTitle());
             articleSource.setText(item.getSource());
             Glide.with(itemView).load(item.getImage()).fitCenter().into(articleImage);
 
-            root.setOnClickListener(view -> {});
+            root.setOnClickListener(
+                    view -> {
+                        HomePageToArticleViewer homePageToArticleViewer =
+                                HomePageDirections.homePageToArticleViewer(item);
+                        Navigation.findNavController(rootLayout).navigate(homePageToArticleViewer);
+                    });
+
             saveArticle.setOnClickListener(view -> {});
         }
     }
