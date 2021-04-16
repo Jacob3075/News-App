@@ -64,18 +64,17 @@
 				app:layout_constraintStart_toStartOf="parent"/>
 
 		<ImageButton
-			android:id="@+id/btnSaveArticle"
-			android:layout_width="32dp"
-			android:layout_height="41dp"
-			android:backgroundTint="#00000000"
-			android:contentDescription="Save Article"
-			android:foreground="?android:attr/selectableItemBackgroundBorderless"
-			android:src="@drawable/save_icon"
-			android:onClick="save_news"
-			app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toEndOf="@+id/tvTitle"
-			app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+				android:id="@+id/btnSaveArticle"
+				android:layout_width="32dp"
+				android:layout_height="41dp"
+				android:backgroundTint="#00000000"
+				android:contentDescription="Save Article"
+				android:foreground="?android:attr/selectableItemBackgroundBorderless"
+				android:src="@drawable/save_icon"
+				app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@+id/tvTitle"
+				app:layout_constraintTop_toTopOf="@+id/tvTitle"/>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
