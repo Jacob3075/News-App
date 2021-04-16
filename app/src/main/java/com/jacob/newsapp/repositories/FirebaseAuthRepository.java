@@ -120,6 +120,7 @@ public class FirebaseAuthRepository {
 
     public void logout() {
         firebaseAuth.signOut();
+        authenticationResultLiveData.setValue(null);
     }
 
     public LiveData<User> getUserLiveData() {
