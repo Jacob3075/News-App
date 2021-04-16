@@ -80,8 +80,10 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
             Glide.with(itemView).load(item.getImage()).fitCenter().into(articleImage);
 
             root.setOnClickListener(view -> {
+                String articleName = articleTitle.getEditableText().toString();
+                String url = articleSource.getEditableText().toString();
 
-                HomePageDirections.HomePageToArticleViewer action = HomePageDirections.homePageToArticleViewer();
+                HomePageDirections.HomePageToArticleViewer action = HomePageDirections.homePageToArticleViewer(articleName, url);
                 Navigation.findNavController(view).navigate(action);
             });
             saveArticle.setOnClickListener(view -> {
