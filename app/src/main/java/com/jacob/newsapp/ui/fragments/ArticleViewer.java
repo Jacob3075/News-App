@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.*;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ArticleViewerFragmentBinding;
@@ -84,6 +82,4 @@ public class ArticleViewer extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
 }
