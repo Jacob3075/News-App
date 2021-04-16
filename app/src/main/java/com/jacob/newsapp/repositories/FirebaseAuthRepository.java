@@ -10,6 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.jacob.newsapp.models.User;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 import static com.jacob.newsapp.utilities.Constants.USERS;
 
 public class FirebaseAuthRepository {
@@ -37,7 +39,12 @@ public class FirebaseAuthRepository {
                                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                                 if (currentUser != null) {
                                     User newUser = getUserFromFireBaseUser(currentUser);
+
                                     newUser.setName(userName);
+                                    newUser.setSavedArticles(new ArrayList<>());
+                                    newUser.setSavedCategories(new ArrayList<>());
+                                    newUser.setSavedSources(new ArrayList<>());
+
                                     createUserInFireStoreIfNotExists(newUser);
                                 }
                             } else {
