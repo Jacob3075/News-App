@@ -10,6 +10,10 @@ public class User implements Parcelable {
     private String uid;
     private String name;
     private String email;
+    private List<Article> savedArticles;
+    private List<String> savedCategories;
+    private List<String> savedSources;
+
     public static final Creator<User> CREATOR =
             new Creator<User>() {
                 @Override
@@ -22,8 +26,6 @@ public class User implements Parcelable {
                     return new User[size];
                 }
             };
-    private List<String> savedCategories;
-    private List<String> savedSources;
 
     public User() {}
 
@@ -32,8 +34,6 @@ public class User implements Parcelable {
         this.name = name;
         this.email = email;
     }
-
-    private List<Article> savedArticles;
 
     public User(
             String uid,
@@ -75,16 +75,28 @@ public class User implements Parcelable {
         return email;
     }
 
+    public List<Article> getSavedArticles() {
+        return savedArticles;
+    }
+
+    public void setSavedArticles(List<Article> savedArticles) {
+        this.savedArticles = savedArticles;
+    }
+
     public List<String> getSavedCategories() {
         return savedCategories;
+    }
+
+    public void setSavedCategories(List<String> savedCategories) {
+        this.savedCategories = savedCategories;
     }
 
     public List<String> getSavedSources() {
         return savedSources;
     }
 
-    public List<Article> getSavedArticles() {
-        return savedArticles;
+    public void setSavedSources(List<String> savedSources) {
+        this.savedSources = savedSources;
     }
 
     @NotNull

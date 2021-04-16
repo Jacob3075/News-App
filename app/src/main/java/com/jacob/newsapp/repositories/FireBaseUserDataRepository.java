@@ -11,6 +11,7 @@ import com.jacob.newsapp.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jacob.newsapp.utilities.Constants.*;
 
@@ -18,11 +19,11 @@ import static com.jacob.newsapp.utilities.Constants.*;
 public class FireBaseUserDataRepository {
 
     private static final String TAG = "SavedArticleRepository";
+    private static FireBaseUserDataRepository userDataRepository;
     private final DocumentReference userRefByUid;
     private final MutableLiveData<List<Article>> articlesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> sourcesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> categoriesLiveData = new MutableLiveData<>();
-    private FireBaseUserDataRepository userDataRepository;
 
     private FireBaseUserDataRepository() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -31,7 +32,7 @@ public class FireBaseUserDataRepository {
         getUserSavedData();
     }
 
-    public FireBaseUserDataRepository getInstance() {
+    public static FireBaseUserDataRepository getInstance() {
         if (userDataRepository == null) {
             userDataRepository = new FireBaseUserDataRepository();
         }
@@ -66,11 +67,10 @@ public class FireBaseUserDataRepository {
             value = new ArrayList<>();
         }
         value.add(newArticle);
-        articlesLiveData.setValue(value);
-        saveNewArticle(value);
+        updateSavedArticles(value);
     }
 
-    private void saveNewArticle(List<Article> value) {
+    private void updateSavedArticles(List<Article> value) {
         userRefByUid
                 .update(SAVED_ARTICLES, value)
                 .addOnSuccessListener(voidTask -> {})
@@ -82,17 +82,28 @@ public class FireBaseUserDataRepository {
                                                 + exception.getMessage())));
     }
 
+    public void unSaveArticle(Article article) {
+        List<Article> articlesLiveDataValue = articlesLiveData.getValue();
+        if (articlesLiveDataValue == null) return;
+
+        List<Article> articles =
+                articlesLiveDataValue.stream()
+                        .filter(article::notEquals)
+                        .collect(Collectors.toList());
+
+        updateSavedArticles(articles);
+    }
+
     public void saveNewSource(String newCategory) {
         List<String> savedSources = sourcesLiveData.getValue();
         if (savedSources == null) {
             savedSources = new ArrayList<>();
         }
         savedSources.add(newCategory);
-        sourcesLiveData.setValue(savedSources);
-        saveNewSource(savedSources);
+        updateSavedSources(savedSources);
     }
 
-    private void saveNewSource(List<String> newSavedSources) {
+    private void updateSavedSources(List<String> newSavedSources) {
         userRefByUid
                 .update(SAVED_SOURCES, newSavedSources)
                 .addOnSuccessListener(voidTask -> {})
@@ -110,11 +121,10 @@ public class FireBaseUserDataRepository {
             savedCategories = new ArrayList<>();
         }
         savedCategories.add(newCategory);
-        categoriesLiveData.setValue(savedCategories);
-        saveNewCategory(savedCategories);
+        updateSavedCategories(savedCategories);
     }
 
-    private void saveNewCategory(List<String> newSavedCategories) {
+    private void updateSavedCategories(List<String> newSavedCategories) {
         userRefByUid
                 .update(SAVED_CATEGORIES, newSavedCategories)
                 .addOnSuccessListener(voidTask -> {})
