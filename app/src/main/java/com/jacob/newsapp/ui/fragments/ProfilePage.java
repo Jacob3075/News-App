@@ -11,10 +11,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ProfilePageFragmentBinding;
+import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.models.User;
 import com.jacob.newsapp.ui.activities.LoginScreen;
 import com.jacob.newsapp.viewmodels.ProfilePageViewModel;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class ProfilePage extends Fragment {
 
@@ -38,8 +41,17 @@ public class ProfilePage extends Fragment {
     private void setUpUI() {
         viewModel.getLoggedInUser().observe(getViewLifecycleOwner(), this::setDetails);
         binding.savedCategoriesButton.setOnClickListener(this::openSavedCategoriesPage);
-        binding.savedSourcesButton.setOnClickListener(this::openSavedSourcesPage);
+        binding.savedSourcesButton.setOnClickListener(this::testSaveArticle);
         binding.logoutButton.setOnClickListener(this::logout);
+        viewModel.getSavedArticles().observe(getViewLifecycleOwner(), this::observeFirebaseChanges);
+    }
+
+    private void testSaveArticle(View view) {
+        viewModel.saveArticle();
+    }
+
+    private void observeFirebaseChanges(List<Article> articles) {
+        System.out.println("articles = " + articles);
     }
 
     private void setDetails(User user) {
