@@ -58,6 +58,10 @@ public class HomePageViewModal extends ViewModel {
         }
     }
 
+    /**
+     * @param article to check if is already present in the database.
+     * @return True if the article is present and false if the article is not present.
+     */
     public boolean isArticleSaved(Article article) {
         List<Article> articles = userDataRepository.getArticlesLiveData().getValue();
         if (articles == null) {
