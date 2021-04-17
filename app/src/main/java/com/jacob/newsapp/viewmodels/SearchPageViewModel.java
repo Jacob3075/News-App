@@ -5,14 +5,19 @@ import androidx.lifecycle.*;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 import com.jacob.newsapp.models.Article;
+import com.jacob.newsapp.repositories.FireBaseUserDataRepository;
 import com.jacob.newsapp.services.NewsDataFactory;
 import com.jacob.newsapp.ui.fragments.SearchPage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class SearchPageViewModel extends ViewModel {
 
+    private final FireBaseUserDataRepository userDataRepository =
+            FireBaseUserDataRepository.getInstance();
     private final MutableLiveData<Pair<SearchPage.SEARCH_PAGES, String>> query =
             new MediatorLiveData<>();
     private LiveData<PagedList<Article>> pagedListLiveData;
@@ -67,5 +72,28 @@ public class SearchPageViewModel extends ViewModel {
 
     public void setQuery(Pair<SearchPage.SEARCH_PAGES, String> newQuery) {
         query.setValue(newQuery);
+    }
+
+    /**
+     * @param article to save or remove from the database
+     * @return true if the article was saved and false if the article was removed.
+     */
+    public boolean saveArticleButtonPressed(Article article) {
+        if (isArticleSaved(article)) {
+            userDataRepository.unSaveArticle(article);
+            return false;
+        } else {
+            userDataRepository.saveNewArticle(article);
+            return true;
+        }
+    }
+
+    public boolean isArticleSaved(Article article) {
+        List<Article> articles = userDataRepository.getArticlesLiveData().getValue();
+        if (articles == null) {
+            articles = new ArrayList<>();
+        }
+
+        return articles.contains(article);
     }
 }

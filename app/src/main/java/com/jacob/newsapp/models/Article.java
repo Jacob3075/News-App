@@ -172,7 +172,7 @@ public class Article implements Parcelable {
     }
 
     public boolean notEquals(Object o) {
-        return equals(o);
+        return !equals(o);
     }
 
     @Override

@@ -23,6 +23,13 @@ import org.jetbrains.annotations.NotNull;
 import static com.jacob.newsapp.adapters.PagedNewsListAdapter.NewsArticleItemViewHolder;
 
 public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleItemViewHolder> {
+    private final CardViewModelFunctions viewModelFunctions;
+
+    public PagedNewsListAdapter(CardViewModelFunctions viewModelFunctions) {
+        super(DIFF_CALLBACK);
+        this.viewModelFunctions = viewModelFunctions;
+    }
+
     private static final DiffUtil.ItemCallback<Article> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Article>() {
                 @Override
@@ -37,8 +44,9 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
                 }
             };
 
-    public PagedNewsListAdapter() {
-        super(DIFF_CALLBACK);
+    @Override
+    public void onBindViewHolder(@NonNull NewsArticleItemViewHolder holder, int position) {
+        holder.bind(getItem(position), viewModelFunctions);
     }
 
     @NonNull
@@ -50,9 +58,18 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
         return new NewsArticleItemViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull NewsArticleItemViewHolder holder, int position) {
-        holder.bind(getItem(position));
+    public interface CardViewModelFunctions {
+        /**
+         * @param article to save or remove from the database
+         * @return true if the article was saved and false if the article was removed.
+         */
+        boolean onArticleClicked(Article article);
+
+        /**
+         * @param article to check if is already present in the database.
+         * @return True if the article is present and false if the article is not present.
+         */
+        boolean isArticleSaved(Article article);
     }
 
     public static class NewsArticleItemViewHolder extends RecyclerView.ViewHolder {
@@ -73,9 +90,10 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
             articleImage = itemView.findViewById(R.id.imgArticleImage);
         }
 
-        public void bind(@NotNull Article item) {
+        public void bind(@NotNull Article item, CardViewModelFunctions viewModelFunctions) {
             articleTitle.setText(item.getTitle());
             articleSource.setText(item.getSource());
+            updateSaveIcon(viewModelFunctions.isArticleSaved(item));
             Glide.with(root).load(item.getImage()).fitCenter().into(articleImage);
 
             root.setOnClickListener(
@@ -85,7 +103,19 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
                         Navigation.findNavController(rootLayout).navigate(homePageToArticleViewer);
                     });
 
-            saveArticle.setOnClickListener(view -> {});
+            saveArticle.setOnClickListener(
+                    view -> {
+                        boolean isArticleSaved = viewModelFunctions.onArticleClicked(item);
+                        updateSaveIcon(isArticleSaved);
+                    });
+        }
+
+        private void updateSaveIcon(boolean isArticleSaved) {
+            if (isArticleSaved) {
+                saveArticle.setImageResource(R.drawable.saved_icon);
+            } else {
+                saveArticle.setImageResource(R.drawable.save_icon);
+            }
         }
     }
 }
