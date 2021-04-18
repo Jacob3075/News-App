@@ -19,6 +19,7 @@ public class ArticleViewer extends Fragment {
 
     private ArticleViewerViewModel viewModel;
     private ArticleViewerFragmentBinding binding;
+    private Article article;
 
     @Override
     public View onCreateView(
@@ -28,27 +29,37 @@ public class ArticleViewer extends Fragment {
         binding = ArticleViewerFragmentBinding.inflate(inflater, container, false);
         ConstraintLayout root = binding.getRoot();
 
-        Article article = ArticleViewerArgs.fromBundle(getArguments()).getArticle();
-
-        setUpTopBar(article);
-        setUpWebView(article);
+        article = ArticleViewerArgs.fromBundle(getArguments()).getArticle();
 
         return root;
     }
 
-    private void setUpTopBar(Article article) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(ArticleViewerViewModel.class);
+        setUpUI();
+    }
+
+    private void setUpUI() {
+        setUpTopBar();
+        setUpWebView();
+    }
+
+    private void setUpTopBar() {
         MaterialToolbar topAppBar = binding.topAppBar;
         topAppBar.setOnMenuItemClickListener(
                 item -> {
                     switch (item.getItemId()) {
                         case R.id.saveArticle:
+                            handleSaveArticleItemClicked();
+                            return true;
                         case R.id.saveCategory:
+                            handleSaveCategoryItemClicked();
+                            return true;
                         case R.id.saveSource:
-                        case R.id.searchCategory:
-                        case R.id.searchSource:
-                            {
-                                return false;
-                            }
+                            handleSaveSourceItemClicked();
+                            return true;
                         default:
                             return false;
                     }
@@ -58,7 +69,7 @@ public class ArticleViewer extends Fragment {
         topAppBar.setSubtitle(article.getSource());
     }
 
-    private void setUpWebView(Article article) {
+    private void setUpWebView() {
         WebView webView = binding.webView;
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(article.getUrl());
@@ -71,11 +82,11 @@ public class ArticleViewer extends Fragment {
                                 && webView.canGoBack());
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(ArticleViewerViewModel.class);
-    }
+    private void handleSaveArticleItemClicked() {}
+
+    private void handleSaveCategoryItemClicked() {}
+
+    private void handleSaveSourceItemClicked() {}
 
     @Override
     public void onDestroyView() {

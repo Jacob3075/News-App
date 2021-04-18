@@ -93,12 +93,12 @@ public class FireBaseUserDataRepository {
         updateUserFieldWithValue(SAVED_ARTICLES, updatedArticlesList);
     }
 
-    public void saveNewSource(String newCategory) {
+    public void saveNewSource(String newSource) {
         List<String> savedSources = sourcesLiveData.getValue();
         if (savedSources == null) {
             savedSources = new ArrayList<>();
         }
-        savedSources.add(newCategory);
+        savedSources.add(newSource);
         updateUserFieldWithValue(SAVED_SOURCES, savedSources);
     }
 

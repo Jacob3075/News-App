@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/saveArticle"
-        android:icon="@drawable/ic_saved"
-        android:title="Save Article"
-        android:visible="true"
-        app:showAsAction="always" />
+            android:id="@+id/saveArticle"
+            android:icon="@drawable/ic_saved"
+            android:title="Save Article"
+            android:visible="true"
+            app:showAsAction="always"/>
     <item
-        android:id="@+id/saveCategory"
-        android:title="Save Category" />
+            android:id="@+id/saveCategory"
+            android:title="Save Category"/>
     <item
-        android:id="@+id/saveSource"
-        android:title="Save Source" />
-    <item
-        android:id="@+id/searchCategory"
-        android:title="Search Category" />
-    <item
-        android:id="@+id/searchSource"
-        android:title="Search Source" />
+            android:id="@+id/saveSource"
+            android:title="Save Source"/>
 </menu>
