@@ -12,17 +12,12 @@ public class ArticleViewerViewModel extends ViewModel {
     private final FireBaseUserDataRepository userDataRepository =
             FireBaseUserDataRepository.getInstance();
 
-    /**
-     * @param article to save or remove from the database
-     * @return true if the article was saved and false if the article was removed.
-     */
-    public boolean saveArticleButtonPressed(Article article) {
+    /** @param article to save or remove from the database */
+    public void saveArticleButtonPressed(Article article) {
         if (isArticleSaved(article)) {
             userDataRepository.unSaveArticle(article);
-            return false;
         } else {
             userDataRepository.saveNewArticle(article);
-            return true;
         }
     }
 
@@ -38,17 +33,12 @@ public class ArticleViewerViewModel extends ViewModel {
 
         return articles.contains(article);
     }
-    /**
-     * @param source save or remove from the database
-     * @return true if the source was saved and false if the source was removed.
-     */
-    public boolean saveSourceMenuItemPressed(String source) {
+    /** @param source save or remove from the database */
+    public void saveSourceMenuItemPressed(String source) {
         if (isSourceSaved(source)) {
             userDataRepository.unSaveSource(source);
-            return false;
         } else {
             userDataRepository.saveNewSource(source);
-            return true;
         }
     }
 
@@ -65,17 +55,12 @@ public class ArticleViewerViewModel extends ViewModel {
         return sources.contains(source);
     }
 
-    /**
-     * @param category to save or remove from the database
-     * @return true if the category was saved and false if the category was removed.
-     */
-    public boolean saveCategoryMenuItemPressed(String category) {
+    /** @param category to save or remove from the database */
+    public void saveCategoryMenuItemPressed(String category) {
         if (isCategorySaved(category)) {
-            userDataRepository.unSaveSource(category);
-            return false;
+            userDataRepository.unSaveCategory(category);
         } else {
-            userDataRepository.saveNewSource(category);
-            return true;
+            userDataRepository.saveNewCategory(category);
         }
     }
 

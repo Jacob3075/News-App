@@ -4,7 +4,7 @@
 
     <item
             android:id="@+id/saveArticle"
-            android:icon="@drawable/ic_saved"
+            android:icon="@drawable/save_icon"
             android:title="Save Article"
             android:visible="true"
             app:showAsAction="always"/>

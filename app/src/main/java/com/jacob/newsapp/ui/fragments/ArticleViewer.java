@@ -14,6 +14,7 @@ import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ArticleViewerFragmentBinding;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.viewmodels.ArticleViewerViewModel;
+import org.jetbrains.annotations.NotNull;
 
 public class ArticleViewer extends Fragment {
 
@@ -29,7 +30,7 @@ public class ArticleViewer extends Fragment {
         binding = ArticleViewerFragmentBinding.inflate(inflater, container, false);
         ConstraintLayout root = binding.getRoot();
 
-        article = ArticleViewerArgs.fromBundle(getArguments()).getArticle();
+        article = ArticleViewerArgs.fromBundle(requireArguments()).getArticle();
 
         return root;
     }
@@ -41,32 +42,48 @@ public class ArticleViewer extends Fragment {
         setUpUI();
     }
 
+    @Override
+    public void onCreateOptionsMenu(
+            @NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.article_viewer_menu, menu);
+    }
+
     private void setUpUI() {
+        setUpMenuItems();
         setUpTopBar();
         setUpWebView();
     }
 
-    private void setUpTopBar() {
+    private void setUpMenuItems() {
         MaterialToolbar topAppBar = binding.topAppBar;
+        Menu menu = topAppBar.getMenu();
+
+        updateMenuItems(menu.findItem(R.id.saveArticle));
+        updateMenuItems(menu.findItem(R.id.saveSource));
+        updateMenuItems(menu.findItem(R.id.saveCategory));
+
         topAppBar.setOnMenuItemClickListener(
                 item -> {
-                    switch (item.getItemId()) {
-                        case R.id.saveArticle:
-                            handleSaveArticleItemClicked();
-                            return true;
-                        case R.id.saveCategory:
-                            handleSaveCategoryItemClicked();
-                            return true;
-                        case R.id.saveSource:
-                            handleSaveSourceItemClicked();
-                            return true;
-                        default:
-                            return false;
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.saveArticle) {
+                        handleSaveArticleItemClicked(item);
+                        return true;
+                    } else if (itemId == R.id.saveCategory) {
+                        handleSaveCategoryItemClicked(item);
+                        return true;
+                    } else if (itemId == R.id.saveSource) {
+                        handleSaveSourceItemClicked(item);
+                        return true;
                     }
+                    return false;
                 });
+    }
 
+    private void setUpTopBar() {
+        MaterialToolbar topAppBar = binding.topAppBar;
         topAppBar.setTitle(article.getTitle());
-        topAppBar.setSubtitle(article.getSource());
+        topAppBar.setSubtitle(article.getSource() + "\t\t|\t\t" + article.getCategory());
     }
 
     private void setUpWebView() {
@@ -82,11 +99,38 @@ public class ArticleViewer extends Fragment {
                                 && webView.canGoBack());
     }
 
-    private void handleSaveArticleItemClicked() {}
+    private void updateMenuItems(@NotNull MenuItem menuItem) {
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.saveArticle) {
+            menuItem.setIcon(
+                    viewModel.isArticleSaved(article)
+                            ? R.drawable.saved_icon
+                            : R.drawable.save_icon);
+        } else if (itemId == R.id.saveSource) {
+            menuItem.setTitle(
+                    viewModel.isSourceSaved(article.getSource()) ? "Remove Source" : "Save Source");
+        } else if (itemId == R.id.saveCategory) {
+            menuItem.setTitle(
+                    viewModel.isCategorySaved(article.getCategory())
+                            ? "Remove Category"
+                            : "Save Category");
+        }
+    }
 
-    private void handleSaveCategoryItemClicked() {}
+    private void handleSaveArticleItemClicked(MenuItem item) {
+        viewModel.saveArticleButtonPressed(article);
+        updateMenuItems(item);
+    }
 
-    private void handleSaveSourceItemClicked() {}
+    private void handleSaveCategoryItemClicked(MenuItem item) {
+        viewModel.saveCategoryMenuItemPressed(article.getCategory());
+        updateMenuItems(item);
+    }
+
+    private void handleSaveSourceItemClicked(MenuItem item) {
+        viewModel.saveSourceMenuItemPressed(article.getSource());
+        updateMenuItems(item);
+    }
 
     @Override
     public void onDestroyView() {
