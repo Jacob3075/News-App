@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.adapters.PagedNewsListAdapter;
 import com.jacob.newsapp.adapters.PagedNewsListAdapter.CardViewModelFunctions;
+import com.jacob.newsapp.adapters.PagedNewsListAdapter.Page;
 import com.jacob.newsapp.databinding.SearchCategoriesTabFragmentBinding;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.viewmodels.SearchPageViewModel;
@@ -57,7 +58,7 @@ public class SearchCategoriesTab extends Fragment {
                     }
                 };
 
-        PagedNewsListAdapter adapter = new PagedNewsListAdapter(listener);
+        PagedNewsListAdapter adapter = new PagedNewsListAdapter(listener, Page.SEARCH);
 
         viewModel.getPagedListLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), adapter::submitList);

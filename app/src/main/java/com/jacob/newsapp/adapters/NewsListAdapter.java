@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.R;
+import com.jacob.newsapp.adapters.PagedNewsListAdapter.Page;
 import com.jacob.newsapp.models.Article;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +39,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsArticleItemViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull NewsArticleItemViewHolder holder, int position) {
-        holder.bind(articles.get(position), viewModelFunctions);
+        holder.bind(articles.get(position), viewModelFunctions, Page.SAVED);
     }
 
     @Override

@@ -69,7 +69,8 @@ public class HomePage extends Fragment {
                     }
                 };
 
-        PagedNewsListAdapter adapter = new PagedNewsListAdapter(listener);
+        PagedNewsListAdapter adapter =
+                new PagedNewsListAdapter(listener, PagedNewsListAdapter.Page.HOME);
 
         viewModel.getLatestNews().removeObservers(getViewLifecycleOwner());
         viewModel.getLatestNews().observe(getViewLifecycleOwner(), adapter::submitList);
