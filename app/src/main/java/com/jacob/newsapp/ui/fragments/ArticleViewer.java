@@ -13,6 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ArticleViewerFragmentBinding;
 import com.jacob.newsapp.models.Article;
+import com.jacob.newsapp.utilities.Utils;
 import com.jacob.newsapp.viewmodels.ArticleViewerViewModel;
 import org.jetbrains.annotations.NotNull;
 
@@ -83,7 +84,11 @@ public class ArticleViewer extends Fragment {
     private void setUpTopBar() {
         MaterialToolbar topAppBar = binding.topAppBar;
         topAppBar.setTitle(article.getTitle());
-        topAppBar.setSubtitle(article.getSource() + "\t\t|\t\t" + article.getCategory());
+
+        String source = Utils.capitalize(article.getSource());
+        String category = Utils.capitalize(article.getCategory());
+
+        topAppBar.setSubtitle(source + "\t\t\t|\t\t\t" + category);
     }
 
     private void setUpWebView() {

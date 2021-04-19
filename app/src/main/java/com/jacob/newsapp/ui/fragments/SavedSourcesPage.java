@@ -8,29 +8,53 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.jacob.newsapp.R;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.jacob.newsapp.adapters.SavedSourcesAdapter;
+import com.jacob.newsapp.databinding.SavedSourcesPageFragmentBinding;
 import com.jacob.newsapp.viewmodels.SavedSourcesPageViewModel;
+
+import java.util.List;
 
 public class SavedSourcesPage extends Fragment {
 
-    private SavedSourcesPageViewModel mViewModel;
-
-    public static SavedSourcesPage newInstance() {
-        return new SavedSourcesPage();
-    }
+    private SavedSourcesPageViewModel viewModel;
+    private SavedSourcesPageFragmentBinding binding;
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.saved_sources_page_fragment, container, false);
+        binding = SavedSourcesPageFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SavedSourcesPageViewModel.class);
-        // TODO: Use the ViewModel
+        viewModel = new ViewModelProvider(this).get(SavedSourcesPageViewModel.class);
+        setUpUI();
+    }
+
+    private void setUpUI() {
+        viewModel.getSavedSources().observe(getViewLifecycleOwner(), this::updateSavedSourcesList);
+    }
+
+    private void updateSavedSourcesList(List<String> savedSources) {
+        RecyclerView recyclerView = binding.recyclerView;
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        SavedSourcesAdapter savedCategoriesAdapter = new SavedSourcesAdapter(savedSources);
+        recyclerView.setAdapter(savedCategoriesAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

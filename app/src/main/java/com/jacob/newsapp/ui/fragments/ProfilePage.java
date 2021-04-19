@@ -11,13 +11,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.databinding.ProfilePageFragmentBinding;
-import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.models.User;
 import com.jacob.newsapp.ui.activities.LoginScreen;
 import com.jacob.newsapp.viewmodels.ProfilePageViewModel;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class ProfilePage extends Fragment {
 
@@ -41,20 +38,11 @@ public class ProfilePage extends Fragment {
     private void setUpUI() {
         viewModel.getLoggedInUser().observe(getViewLifecycleOwner(), this::setDetails);
         binding.savedCategoriesButton.setOnClickListener(this::openSavedCategoriesPage);
-        binding.savedSourcesButton.setOnClickListener(this::testSaveArticle);
+        binding.savedSourcesButton.setOnClickListener(this::openSavedSourcesPage);
         binding.logoutButton.setOnClickListener(this::logout);
-        viewModel.getSavedArticles().observe(getViewLifecycleOwner(), this::observeFirebaseChanges);
     }
 
-    private void testSaveArticle(View view) {
-        viewModel.saveArticle();
-    }
-
-    private void observeFirebaseChanges(List<Article> articles) {
-        System.out.println("articles = " + articles);
-    }
-
-    private void setDetails(User user) {
+    private void setDetails(@NotNull User user) {
         binding.userName.setText(user.getName());
     }
 
@@ -63,7 +51,7 @@ public class ProfilePage extends Fragment {
     }
 
     private void openSavedSourcesPage(View view) {
-        Navigation.findNavController(view).navigate(R.id.profilePage_to_savedCategoriesPage);
+        Navigation.findNavController(view).navigate(R.id.profilePage_to_savedSourcesPage);
     }
 
     private void logout(View view) {
@@ -71,7 +59,7 @@ public class ProfilePage extends Fragment {
         Intent intent = new Intent(getContext(), LoginScreen.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        getActivity().finish();
+        requireActivity().finish();
     }
 
     @Override

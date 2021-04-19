@@ -18,6 +18,7 @@ import com.jacob.newsapp.R;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.ui.fragments.HomePageDirections;
 import com.jacob.newsapp.ui.fragments.HomePageDirections.HomePageToArticleViewer;
+import com.jacob.newsapp.utilities.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import static com.jacob.newsapp.adapters.PagedNewsListAdapter.NewsArticleItemViewHolder;
@@ -90,9 +91,10 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
             articleImage = itemView.findViewById(R.id.imgArticleImage);
         }
 
-        public void bind(@NotNull Article item, CardViewModelFunctions viewModelFunctions) {
+        public void bind(
+                @NotNull Article item, @NotNull CardViewModelFunctions viewModelFunctions) {
             articleTitle.setText(item.getTitle());
-            articleSource.setText(item.getSource());
+            articleSource.setText(Utils.capitalize(item.getSource()));
             updateSaveIcon(viewModelFunctions.isArticleSaved(item));
             Glide.with(root).load(item.getImage()).fitCenter().into(articleImage);
 

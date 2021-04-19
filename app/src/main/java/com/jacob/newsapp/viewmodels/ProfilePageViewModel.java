@@ -7,8 +7,6 @@ import com.jacob.newsapp.models.User;
 import com.jacob.newsapp.repositories.FireBaseUserDataRepository;
 import com.jacob.newsapp.repositories.FirebaseAuthRepository;
 
-import java.util.List;
-
 public class ProfilePageViewModel extends ViewModel {
     private final FirebaseAuthRepository firebaseAuthRepository =
             FirebaseAuthRepository.getInstance();
@@ -30,14 +28,6 @@ public class ProfilePageViewModel extends ViewModel {
         newArticle.setUrl("URL");
         newArticle.setImage("Image");
         userDataRepository.saveNewArticle(newArticle);
-    }
-
-    public LiveData<List<String>> getSavedSources() {
-        return userDataRepository.getSourcesLiveData();
-    }
-
-    public LiveData<List<Article>> getSavedArticles() {
-        return userDataRepository.getArticlesLiveData();
     }
 
     public LiveData<User> getLoggedInUser() {

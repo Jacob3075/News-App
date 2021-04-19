@@ -7,13 +7,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.R;
+import com.jacob.newsapp.utilities.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SavedCategoriesAdapter
-        extends RecyclerView.Adapter<SavedCategoriesAdapter.SaveCategoryRowItemViewHolder> {
+import static com.jacob.newsapp.adapters.SavedCategoriesAdapter.SaveCategoryRowItemViewHolder;
 
-    private final List<String> data;
+public class SavedCategoriesAdapter extends RecyclerView.Adapter<SaveCategoryRowItemViewHolder> {
+
+    private List<String> data = new ArrayList<>();
 
     public SavedCategoriesAdapter(List<String> data) {
         this.data = data;
@@ -31,7 +34,7 @@ public class SavedCategoriesAdapter
 
     @Override
     public void onBindViewHolder(@NonNull SaveCategoryRowItemViewHolder holder, int position) {
-        holder.txtCategory.setText(data.get(position));
+        holder.bind(data.get(position));
     }
 
     @Override
@@ -40,11 +43,15 @@ public class SavedCategoriesAdapter
     }
 
     public static class SaveCategoryRowItemViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCategory;
+        private final TextView txtCategory;
 
         public SaveCategoryRowItemViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCategory = itemView.findViewById(R.id.txtCategory);
+        }
+
+        public void bind(String category) {
+            txtCategory.setText(Utils.capitalize(category));
         }
     }
 }
