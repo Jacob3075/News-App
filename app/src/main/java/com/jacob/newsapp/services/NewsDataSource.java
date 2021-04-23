@@ -1,5 +1,6 @@
 package com.jacob.newsapp.services;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
 import com.jacob.newsapp.models.Article;
@@ -15,6 +16,7 @@ import static com.jacob.newsapp.utilities.Constants.*;
 
 public class NewsDataSource extends PageKeyedDataSource<Integer, Article> {
 
+    private static final String TAG = NewsDataSource.class.getName();
     private final ArticleAPI articleAPI;
     private final String keywordsQuery;
     private final String sourceQuery;
@@ -58,7 +60,9 @@ public class NewsDataSource extends PageKeyedDataSource<Integer, Article> {
 
                             @Override
                             public void onFailure(
-                                    @NotNull Call<MediaStackResponse> call, @NotNull Throwable t) {}
+                                    @NotNull Call<MediaStackResponse> call, @NotNull Throwable t) {
+                                Log.e(TAG, "onFailure: " + t);
+                            }
                         });
     }
 
@@ -96,7 +100,9 @@ public class NewsDataSource extends PageKeyedDataSource<Integer, Article> {
 
                             @Override
                             public void onFailure(
-                                    @NotNull Call<MediaStackResponse> call, @NotNull Throwable t) {}
+                                    @NotNull Call<MediaStackResponse> call, @NotNull Throwable t) {
+                                Log.e(TAG, "onFailure: " + t);
+                            }
                         });
     }
 }
