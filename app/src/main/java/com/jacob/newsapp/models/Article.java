@@ -76,6 +76,8 @@ public class Article implements Parcelable {
         publishedAt = in.readString();
     }
 
+    public Article() {}
+
     public String getUrl() {
         return url;
     }
@@ -167,6 +169,10 @@ public class Article implements Parcelable {
                 || url == null
                 || image == null
                 || category == null;
+    }
+
+    public boolean notEquals(Object o) {
+        return !equals(o);
     }
 
     @Override

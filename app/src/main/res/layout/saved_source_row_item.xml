@@ -1,49 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content">
+<androidx.cardview.widget.CardView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/cardRoot"
+		android:layout_margin="8dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-	<androidx.cardview.widget.CardView
+	<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent">
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:orientation="vertical"
+			android:padding="16dp">
 
-		<androidx.constraintlayout.widget.ConstraintLayout
+		<TextView
+				android:id="@+id/txtSource"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="20dp"
+				android:clickable="true"
+				android:foreground="?android:attr/selectableItemBackgroundBorderless"
+				android:focusable="true"
+				android:text="source-1"
+				android:textColor="@color/black"
+				app:layout_constraintStart_toStartOf="parent"
+				android:textSize="26sp"
+				app:layout_constraintTop_toTopOf="parent"/>
+
+		<View
+				android:id="@+id/divider"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_gravity="center"
-				android:orientation="vertical"
-				android:padding="20dp">
+				android:layout_height="2dp"
+				android:background="?android:attr/listDivider"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/txtSource"/>
 
-			<TextView
-					android:id="@+id/txtSource"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginStart="20dp"
-					android:clickable="true"
-					android:focusable="true"
-					android:foreground="?android:attr/selectableItemBackgroundBorderless"
-					android:textColor="@color/black"
-					android:textSize="25sp"
-					app:layout_constraintStart_toStartOf="parent"
-					android:text="news_source.com"
-					app:layout_constraintTop_toTopOf="parent"/>
-
-			<View
-					android:id="@+id/divider3"
-					android:layout_width="match_parent"
-					android:layout_height="5dp"
-					android:layout_marginStart="20dp"
-					android:layout_marginTop="5dp"
-					android:background="?android:attr/listDivider"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/txtSource"/>
-
-		</androidx.constraintlayout.widget.ConstraintLayout>
-	</androidx.cardview.widget.CardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

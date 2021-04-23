@@ -42,7 +42,7 @@ public class ProfilePage extends Fragment {
         binding.logoutButton.setOnClickListener(this::logout);
     }
 
-    private void setDetails(User user) {
+    private void setDetails(@NotNull User user) {
         binding.userName.setText(user.getName());
     }
 
@@ -51,7 +51,7 @@ public class ProfilePage extends Fragment {
     }
 
     private void openSavedSourcesPage(View view) {
-        Navigation.findNavController(view).navigate(R.id.profilePage_to_savedCategoriesPage);
+        Navigation.findNavController(view).navigate(R.id.profilePage_to_savedSourcesPage);
     }
 
     private void logout(View view) {
@@ -59,7 +59,7 @@ public class ProfilePage extends Fragment {
         Intent intent = new Intent(getContext(), LoginScreen.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        getActivity().finish();
+        requireActivity().finish();
     }
 
     @Override

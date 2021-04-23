@@ -7,15 +7,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.R;
+import com.jacob.newsapp.utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SavedSourcesAdapter
         extends RecyclerView.Adapter<SavedSourcesAdapter.SavedSourceRowItemViewHolder> {
 
-    private final ArrayList<String> data;
+    private List<String> data = new ArrayList<>();
 
-    public SavedSourcesAdapter(ArrayList<String> data) {
+    public SavedSourcesAdapter(List<String> data) {
         this.data = data;
     }
 
@@ -31,7 +33,7 @@ public class SavedSourcesAdapter
 
     @Override
     public void onBindViewHolder(@NonNull SavedSourceRowItemViewHolder holder, int position) {
-        holder.txtSource.setText(data.get(position));
+        holder.bind(data.get(position));
     }
 
     @Override
@@ -40,11 +42,15 @@ public class SavedSourcesAdapter
     }
 
     public static class SavedSourceRowItemViewHolder extends RecyclerView.ViewHolder {
-        TextView txtSource;
+        private final TextView txtSource;
 
         public SavedSourceRowItemViewHolder(@NonNull View itemView) {
             super(itemView);
             txtSource = itemView.findViewById(R.id.txtSource);
+        }
+
+        public void bind(String source) {
+            txtSource.setText(Utils.capitalize(source));
         }
     }
 }

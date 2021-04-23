@@ -11,7 +11,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.adapters.PagedNewsListAdapter;
+import com.jacob.newsapp.adapters.PagedNewsListAdapter.CardViewModelFunctions;
+import com.jacob.newsapp.adapters.PagedNewsListAdapter.Page;
 import com.jacob.newsapp.databinding.SearchCategoriesTabFragmentBinding;
+import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.viewmodels.SearchPageViewModel;
 
 public class SearchCategoriesTab extends Fragment {
@@ -42,8 +45,22 @@ public class SearchCategoriesTab extends Fragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        PagedNewsListAdapter adapter = new PagedNewsListAdapter();
+        CardViewModelFunctions listener =
+                new CardViewModelFunctions() {
+                    @Override
+                    public boolean onArticleClicked(Article article) {
+                        return viewModel.saveArticleButtonPressed(article);
+                    }
 
+                    @Override
+                    public boolean isArticleSaved(Article article) {
+                        return viewModel.isArticleSaved(article);
+                    }
+                };
+
+        PagedNewsListAdapter adapter = new PagedNewsListAdapter(listener, Page.SEARCH);
+
+        viewModel.getPagedListLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
         recyclerView.setAdapter(adapter);
     }

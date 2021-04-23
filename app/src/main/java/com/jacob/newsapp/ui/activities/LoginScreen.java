@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,16 +32,16 @@ public class LoginScreen extends AppCompatActivity {
         binding.loginButton.setOnClickListener(this::loginUser);
         binding.signUpButton.setOnClickListener(this::openSignUpPage);
         binding.homePage.setOnClickListener(this::openHomePage);
+        viewModel.getAuthenticationStatus().observe(this, this::openHomePage);
     }
 
     private void loginUser(View view) {
         String email = binding.emailInput.getText().toString();
         String password = binding.passwordInput.getText().toString();
         viewModel.loginInUser(email, password);
-        viewModel.getAuthenticationStatus().observe(this, this::openHomePage);
     }
 
-    private void openSignUpPage(Object o) {
+    private void openSignUpPage(View view) {
         Intent intent = new Intent(this, SignUpScreen.class);
         startActivity(intent);
     }
@@ -52,7 +53,9 @@ public class LoginScreen extends AppCompatActivity {
         this.finish();
     }
 
-    private void openHomePage(boolean authenticationStatus) {
+    private void openHomePage(@Nullable Boolean authenticationStatus) {
+        if (authenticationStatus == null) return;
+
         if (authenticationStatus) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
