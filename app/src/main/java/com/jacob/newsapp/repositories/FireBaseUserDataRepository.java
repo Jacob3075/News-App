@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jacob.newsapp.models.Article;
@@ -19,16 +20,25 @@ public class FireBaseUserDataRepository {
 
     private static final String TAG = "SavedArticleRepository";
     private static FireBaseUserDataRepository userDataRepository;
-    private final DocumentReference userRefByUid;
+    private DocumentReference userRefByUid;
     private final MutableLiveData<List<Article>> articlesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> sourcesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> categoriesLiveData = new MutableLiveData<>();
 
     private FireBaseUserDataRepository() {
-        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        updateUser();
+    }
+
+    public void updateUser() {
+        Log.d(TAG, "updateUser: called ");
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+
+        String userUid = currentUser.getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         userRefByUid = db.collection(USERS).document(userUid);
         getUserSavedData();
+        Log.d(TAG, "updateUser: called for user: " + userUid);
     }
 
     public static FireBaseUserDataRepository getInstance() {
