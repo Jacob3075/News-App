@@ -1,10 +1,8 @@
 package com.jacob.newsapp.repositories;
 
 import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,21 +11,18 @@ import com.jacob.newsapp.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.jacob.newsapp.utilities.Constants.SAVED_ARTICLES;
-import static com.jacob.newsapp.utilities.Constants.SAVED_CATEGORIES;
-import static com.jacob.newsapp.utilities.Constants.SAVED_SOURCES;
-import static com.jacob.newsapp.utilities.Constants.USERS;
+import static com.jacob.newsapp.utilities.Constants.*;
 
-// TODO: DELETE DATA FUNCTIONALITY
 public class FireBaseUserDataRepository {
 
     private static final String TAG = "SavedArticleRepository";
+    private static FireBaseUserDataRepository userDataRepository;
     private final DocumentReference userRefByUid;
     private final MutableLiveData<List<Article>> articlesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> sourcesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> categoriesLiveData = new MutableLiveData<>();
-    private FireBaseUserDataRepository userDataRepository;
 
     private FireBaseUserDataRepository() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -36,7 +31,7 @@ public class FireBaseUserDataRepository {
         getUserSavedData();
     }
 
-    public FireBaseUserDataRepository getInstance() {
+    public static FireBaseUserDataRepository getInstance() {
         if (userDataRepository == null) {
             userDataRepository = new FireBaseUserDataRepository();
         }
@@ -71,15 +66,13 @@ public class FireBaseUserDataRepository {
             value = new ArrayList<>();
         }
         value.add(newArticle);
-        articlesLiveData.setValue(value);
-        saveNewArticle(value);
+        updateUserFieldWithValue(SAVED_ARTICLES, value);
     }
 
-    private void saveNewArticle(List<Article> value) {
+    private <T> void updateUserFieldWithValue(String field, List<T> value) {
         userRefByUid
-                .update(SAVED_ARTICLES, value)
-                .addOnSuccessListener(voidTask -> {
-                })
+                .update(field, value)
+                .addOnSuccessListener(voidTask -> {})
                 .addOnFailureListener(
                         exception ->
                                 Log.e(
@@ -88,27 +81,37 @@ public class FireBaseUserDataRepository {
                                                 + exception.getMessage())));
     }
 
-    public void saveNewSource(String newCategory) {
+    public void unSaveArticle(Article article) {
+        List<Article> articlesLiveDataValue = articlesLiveData.getValue();
+        if (articlesLiveDataValue == null) return;
+
+        List<Article> updatedArticlesList =
+                articlesLiveDataValue.stream()
+                        .filter(article::notEquals)
+                        .collect(Collectors.toList());
+
+        updateUserFieldWithValue(SAVED_ARTICLES, updatedArticlesList);
+    }
+
+    public void saveNewSource(String newSource) {
         List<String> savedSources = sourcesLiveData.getValue();
         if (savedSources == null) {
             savedSources = new ArrayList<>();
         }
-        savedSources.add(newCategory);
-        sourcesLiveData.setValue(savedSources);
-        saveNewSource(savedSources);
+        savedSources.add(newSource);
+        updateUserFieldWithValue(SAVED_SOURCES, savedSources);
     }
 
-    private void saveNewSource(List<String> newSavedSources) {
-        userRefByUid
-                .update(SAVED_SOURCES, newSavedSources)
-                .addOnSuccessListener(voidTask -> {
-                })
-                .addOnFailureListener(
-                        exception ->
-                                Log.e(
-                                        TAG,
-                                        ("ERROR WHILE UPDATING SAVED SOURCES: "
-                                                + exception.getMessage())));
+    public void unSaveSource(String sourceToRemove) {
+        List<String> sourcesLiveDataValue = sourcesLiveData.getValue();
+        if (sourcesLiveDataValue == null) return;
+
+        List<String> updatedSourcesList =
+                sourcesLiveDataValue.stream()
+                        .filter(source -> !sourceToRemove.equals(source))
+                        .collect(Collectors.toList());
+
+        updateUserFieldWithValue(SAVED_SOURCES, updatedSourcesList);
     }
 
     public void saveNewCategory(String newCategory) {
@@ -117,21 +120,19 @@ public class FireBaseUserDataRepository {
             savedCategories = new ArrayList<>();
         }
         savedCategories.add(newCategory);
-        categoriesLiveData.setValue(savedCategories);
-        saveNewCategory(savedCategories);
+        updateUserFieldWithValue(SAVED_CATEGORIES, savedCategories);
     }
 
-    private void saveNewCategory(List<String> newSavedCategories) {
-        userRefByUid
-                .update(SAVED_CATEGORIES, newSavedCategories)
-                .addOnSuccessListener(voidTask -> {
-                })
-                .addOnFailureListener(
-                        exception ->
-                                Log.e(
-                                        TAG,
-                                        ("ERROR WHILE UPDATING SAVED CATEGORIES: "
-                                                + exception.getMessage())));
+    public void unSaveCategory(String categoryToRemove) {
+        List<String> categoriesLiveDataValue = categoriesLiveData.getValue();
+        if (categoriesLiveDataValue == null) return;
+
+        List<String> updatedCategoriesList =
+                categoriesLiveDataValue.stream()
+                        .filter(category -> !categoryToRemove.equals(category))
+                        .collect(Collectors.toList());
+
+        updateUserFieldWithValue(SAVED_CATEGORIES, updatedCategoriesList);
     }
 
     public LiveData<List<Article>> getArticlesLiveData() {

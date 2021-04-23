@@ -22,6 +22,7 @@ public class HomePageViewModal extends ViewModel {
 
     public HomePageViewModal() {
         init();
+        userDataRepository.updateUser();
     }
 
     private void init() {
