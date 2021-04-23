@@ -16,9 +16,9 @@ import java.util.concurrent.Executors;
 import static com.jacob.newsapp.utilities.Constants.PAGE_SIZE;
 
 public class HomePageViewModal extends ViewModel {
-    private LiveData<PagedList<Article>> pagedListLiveData;
     private final FireBaseUserDataRepository userDataRepository =
             FireBaseUserDataRepository.getInstance();
+    private LiveData<PagedList<Article>> pagedListLiveData;
 
     public HomePageViewModal() {
         init();

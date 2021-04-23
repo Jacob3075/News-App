@@ -20,10 +20,10 @@ public class FireBaseUserDataRepository {
 
     private static final String TAG = "SavedArticleRepository";
     private static FireBaseUserDataRepository userDataRepository;
-    private DocumentReference userRefByUid;
     private final MutableLiveData<List<Article>> articlesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> sourcesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<String>> categoriesLiveData = new MutableLiveData<>();
+    private DocumentReference userRefByUid;
 
     private FireBaseUserDataRepository() {
         updateUser();
@@ -39,13 +39,6 @@ public class FireBaseUserDataRepository {
         userRefByUid = db.collection(USERS).document(userUid);
         getUserSavedData();
         Log.d(TAG, "updateUser: called for user: " + userUid);
-    }
-
-    public static FireBaseUserDataRepository getInstance() {
-        if (userDataRepository == null) {
-            userDataRepository = new FireBaseUserDataRepository();
-        }
-        return userDataRepository;
     }
 
     private void getUserSavedData() {
@@ -68,6 +61,13 @@ public class FireBaseUserDataRepository {
                     sourcesLiveData.setValue(savedSources);
                     categoriesLiveData.setValue(savedCategories);
                 });
+    }
+
+    public static FireBaseUserDataRepository getInstance() {
+        if (userDataRepository == null) {
+            userDataRepository = new FireBaseUserDataRepository();
+        }
+        return userDataRepository;
     }
 
     public void saveNewArticle(Article newArticle) {

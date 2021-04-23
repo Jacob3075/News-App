@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedListAdapter;
@@ -19,7 +18,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.jacob.newsapp.R;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.ui.fragments.HomePageDirections;
-import com.jacob.newsapp.ui.fragments.HomePageDirections.HomePageToArticleViewer;
 import com.jacob.newsapp.ui.fragments.SavedArticlesDirections;
 import com.jacob.newsapp.ui.fragments.SearchPageDirections;
 import com.jacob.newsapp.utilities.Utils;
@@ -28,15 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import static com.jacob.newsapp.adapters.PagedNewsListAdapter.NewsArticleItemViewHolder;
 
 public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleItemViewHolder> {
-    private final CardViewModelFunctions viewModelFunctions;
-    private final Page page;
-
-    public PagedNewsListAdapter(CardViewModelFunctions viewModelFunctions, Page page) {
-        super(DIFF_CALLBACK);
-        this.viewModelFunctions = viewModelFunctions;
-        this.page = page;
-    }
-
     private static final DiffUtil.ItemCallback<Article> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Article>() {
                 @Override
@@ -50,10 +39,13 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
                     return true;
                 }
             };
+    private final CardViewModelFunctions viewModelFunctions;
+    private final Page page;
 
-    @Override
-    public void onBindViewHolder(@NonNull NewsArticleItemViewHolder holder, int position) {
-        holder.bind(getItem(position), viewModelFunctions, page);
+    public PagedNewsListAdapter(CardViewModelFunctions viewModelFunctions, Page page) {
+        super(DIFF_CALLBACK);
+        this.viewModelFunctions = viewModelFunctions;
+        this.page = page;
     }
 
     @NonNull
@@ -63,6 +55,11 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.article_card, parent, false);
         return new NewsArticleItemViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull NewsArticleItemViewHolder holder, int position) {
+        holder.bind(getItem(position), viewModelFunctions, page);
     }
 
     public enum Page {
@@ -88,7 +85,6 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
 
     public static class NewsArticleItemViewHolder extends RecyclerView.ViewHolder {
         private final MaterialCardView root;
-        private final ConstraintLayout rootLayout;
         private final ImageView articleImage;
         private final TextView articleTitle;
         private final TextView articleSource;
@@ -97,7 +93,6 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
         public NewsArticleItemViewHolder(@NonNull View itemView) {
             super(itemView);
             root = itemView.findViewById(R.id.articleCard);
-            rootLayout = itemView.findViewById(R.id.cardLayout);
             articleTitle = itemView.findViewById(R.id.tvTitle);
             articleSource = itemView.findViewById(R.id.tvSource);
             saveArticle = itemView.findViewById(R.id.btnSaveArticle);
@@ -127,6 +122,14 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
                     });
         }
 
+        private void updateSaveIcon(boolean isArticleSaved) {
+            if (isArticleSaved) {
+                saveArticle.setImageResource(R.drawable.saved_icon);
+            } else {
+                saveArticle.setImageResource(R.drawable.save_icon);
+            }
+        }
+
         private NavDirections getActionForPage(Article item, @NotNull Page page) {
             Log.d(getClass().getName(), "getActionForPage: " + page);
             switch (page) {
@@ -136,19 +139,6 @@ public class PagedNewsListAdapter extends PagedListAdapter<Article, NewsArticleI
                     return SavedArticlesDirections.savedArticlesToArticleViewer(item);
                 default:
                     return HomePageDirections.homePageToArticleViewer(item);
-            }
-        }
-
-        @NotNull
-        private HomePageToArticleViewer homePage(@NotNull Article item) {
-            return HomePageDirections.homePageToArticleViewer(item);
-        }
-
-        private void updateSaveIcon(boolean isArticleSaved) {
-            if (isArticleSaved) {
-                saveArticle.setImageResource(R.drawable.saved_icon);
-            } else {
-                saveArticle.setImageResource(R.drawable.save_icon);
             }
         }
     }

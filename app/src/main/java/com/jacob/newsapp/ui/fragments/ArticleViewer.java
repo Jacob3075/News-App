@@ -43,13 +43,6 @@ public class ArticleViewer extends Fragment {
         setUpUI();
     }
 
-    @Override
-    public void onCreateOptionsMenu(
-            @NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.article_viewer_menu, menu);
-    }
-
     private void setUpUI() {
         setUpMenuItems();
         setUpTopBar();
@@ -141,5 +134,12 @@ public class ArticleViewer extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(
+            @NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.article_viewer_menu, menu);
     }
 }

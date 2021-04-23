@@ -4,11 +4,29 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 public class Article implements Parcelable {
+
+    public static final Creator<Article> CREATOR =
+            new Creator<Article>() {
+                @NotNull
+                @Contract("_ -> new")
+                @Override
+                public Article createFromParcel(Parcel in) {
+                    return new Article(in);
+                }
+
+                @NotNull
+                @Contract(value = "_ -> new", pure = true)
+                @Override
+                public Article[] newArray(int size) {
+                    return new Article[size];
+                }
+            };
 
     @Expose
     @SerializedName("author")
@@ -50,20 +68,7 @@ public class Article implements Parcelable {
     @SerializedName("published_at")
     private String publishedAt;
 
-    public static final Creator<Article> CREATOR =
-            new Creator<Article>() {
-                @Override
-                public Article createFromParcel(Parcel in) {
-                    return new Article(in);
-                }
-
-                @Override
-                public Article[] newArray(int size) {
-                    return new Article[size];
-                }
-            };
-
-    protected Article(Parcel in) {
+    protected Article(@NotNull Parcel in) {
         author = in.readString();
         title = in.readString();
         description = in.readString();
@@ -176,6 +181,21 @@ public class Article implements Parcelable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(
+                author,
+                title,
+                description,
+                source,
+                url,
+                image,
+                category,
+                language,
+                country,
+                publishedAt);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -211,7 +231,7 @@ public class Article implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NotNull Parcel dest, int flags) {
         dest.writeString(author);
         dest.writeString(title);
         dest.writeString(description);

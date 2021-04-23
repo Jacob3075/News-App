@@ -46,6 +46,10 @@ public class SavedArticles extends Fragment {
         viewModel.getSavedArticles().observe(getViewLifecycleOwner(), this::updateSavedListItems);
     }
 
+    private void openSearchPage(View view) {
+        Navigation.findNavController(view).navigate(R.id.savedArticles_to_searchPage);
+    }
+
     private void updateSavedListItems(List<Article> articles) {
         CardViewModelFunctions listener =
                 new CardViewModelFunctions() {
@@ -66,10 +70,6 @@ public class SavedArticles extends Fragment {
 
         NewsListAdapter adapter = new NewsListAdapter(articles, listener);
         binding.recyclerView.setAdapter(adapter);
-    }
-
-    private void openSearchPage(View view) {
-        Navigation.findNavController(view).navigate(R.id.savedArticles_to_searchPage);
     }
 
     @Override

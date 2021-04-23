@@ -2,30 +2,34 @@ package com.jacob.newsapp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class User implements Parcelable {
+    public static final Creator<User> CREATOR =
+            new Creator<User>() {
+                @NotNull
+                @Contract("_ -> new")
+                @Override
+                public User createFromParcel(Parcel in) {
+                    return new User(in);
+                }
+
+                @NotNull
+                @Contract(value = "_ -> new", pure = true)
+                @Override
+                public User[] newArray(int size) {
+                    return new User[size];
+                }
+            };
     private String uid;
     private String name;
     private String email;
     private List<Article> savedArticles;
     private List<String> savedCategories;
     private List<String> savedSources;
-
-    public static final Creator<User> CREATOR =
-            new Creator<User>() {
-                @Override
-                public User createFromParcel(Parcel in) {
-                    return new User(in);
-                }
-
-                @Override
-                public User[] newArray(int size) {
-                    return new User[size];
-                }
-            };
 
     public User() {}
 
@@ -50,7 +54,7 @@ public class User implements Parcelable {
         this.savedArticles = savedArticles;
     }
 
-    protected User(Parcel in) {
+    protected User(@NotNull Parcel in) {
         uid = in.readString();
         name = in.readString();
         email = in.readString();
@@ -113,7 +117,7 @@ public class User implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NotNull Parcel dest, int flags) {
         dest.writeString(uid);
         dest.writeString(name);
         dest.writeString(email);

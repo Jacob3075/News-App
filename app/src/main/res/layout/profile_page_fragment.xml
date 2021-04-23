@@ -11,7 +11,7 @@
 			android:layout_width="108dp"
 			android:layout_height="113dp"
 			android:layout_marginTop="28dp"
-			android:contentDescription="@string/todo"
+			android:contentDescription="Profile Icon"
 			android:src="@drawable/circle_cropped"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintHorizontal_bias="0.498"
