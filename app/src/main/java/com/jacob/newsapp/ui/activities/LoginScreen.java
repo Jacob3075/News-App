@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.jacob.newsapp.MainActivity;
 import com.jacob.newsapp.databinding.LoginScreenBinding;
 import com.jacob.newsapp.viewmodels.LoginScreenViewModel;
@@ -45,13 +43,6 @@ public class LoginScreen extends AppCompatActivity {
     private void openSignUpPage(View view) {
         Intent intent = new Intent(this, SignUpScreen.class);
         startActivity(intent);
-    }
-
-    private void openHomePage(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        this.finish();
     }
 
     private void openHomePage(@Nullable Boolean authenticationStatus) {

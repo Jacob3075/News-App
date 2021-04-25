@@ -7,16 +7,16 @@
                                                    tools:context=".ui.fragments.ProfilePage">
 
 	<ImageView
-		android:id="@+id/profileImage"
-		android:layout_width="108dp"
-		android:layout_height="113dp"
-		android:layout_marginTop="28dp"
-		android:contentDescription="@string/todo"
-		android:src="@drawable/prof_img"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintHorizontal_bias="0.498"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+			android:id="@+id/profileImage"
+			android:layout_width="108dp"
+			android:layout_height="113dp"
+			android:layout_marginTop="28dp"
+			android:contentDescription="Profile Icon"
+			android:src="@drawable/ic_profile"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.498"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
 
 	<TextView
 			android:id="@+id/userName"
@@ -36,7 +36,7 @@
 			android:id="@+id/savedCategoriesButton"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="30dp"
+			android:layout_marginTop="40dp"
 			android:background="@drawable/rounded_corner"
 			android:clickable="true"
 			android:drawablePadding="15dp"
@@ -59,7 +59,7 @@
 
 	<TextView
 			android:id="@+id/savedSourcesButton"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="30dp"
 			android:background="@drawable/rounded_corner"
@@ -77,9 +77,9 @@
 			android:textSize="19sp"
 			android:textStyle="bold"
 			app:drawableLeftCompat="@drawable/ic_baseline_table_rows_24"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/savedCategoriesButton"/>
+			app:layout_constraintTop_toBottomOf="@+id/savedCategoriesButton"
+			app:layout_constraintStart_toStartOf="@+id/savedCategoriesButton"
+			app:layout_constraintEnd_toEndOf="@+id/savedCategoriesButton"/>
 
 	<Button
 			android:id="@+id/logoutButton"

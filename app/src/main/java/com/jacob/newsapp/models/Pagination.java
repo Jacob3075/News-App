@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 public class Pagination {
 
     @Expose
@@ -58,6 +60,11 @@ public class Pagination {
     @Override
     public String toString() {
         return String.format(
-                "Pagination{limit=%d, offset=%d, count=%d, total=%d}", limit, offset, count, total);
+                Locale.US,
+                "Pagination{limit=%d, offset=%d, count=%d, total=%d}",
+                limit,
+                offset,
+                count,
+                total);
     }
 }
