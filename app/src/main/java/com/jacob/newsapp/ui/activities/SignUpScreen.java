@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jacob.newsapp.MainActivity;
 import com.jacob.newsapp.databinding.SignUpScreenBinding;
 import com.jacob.newsapp.viewmodels.SignUpScreenViewModel;
+import org.jetbrains.annotations.NotNull;
 
 public class SignUpScreen extends AppCompatActivity {
 
@@ -43,7 +44,20 @@ public class SignUpScreen extends AppCompatActivity {
         viewModel.register(userName, email, password);
     }
 
-    private boolean verifyInputs(String userName, String email, String password) {
+    private void openHomePage(Boolean authenticationStatus) {
+        if (authenticationStatus == null) return;
+
+        if (authenticationStatus) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+        } else {
+            Toast.makeText(this, "Sign Up Failed, try again later", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean verifyInputs(@NotNull String userName, String email, String password) {
         if (userName.isEmpty()) {
             Toast.makeText(this, "User Name can not be empty", Toast.LENGTH_SHORT).show();
             return false;
@@ -65,18 +79,5 @@ public class SignUpScreen extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    private void openHomePage(Boolean authenticationStatus) {
-        if (authenticationStatus == null) return;
-
-        if (authenticationStatus) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            this.finish();
-        } else {
-            Toast.makeText(this, "Sign Up Failed, try again later", Toast.LENGTH_SHORT).show();
-        }
     }
 }

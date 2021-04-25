@@ -53,6 +53,42 @@ public class FirebaseAuthRepository {
                         });
     }
 
+    @NotNull
+    private User getUserFromFireBaseUser(@NotNull FirebaseUser firebaseUser) {
+        String uid = firebaseUser.getUid();
+        String name = firebaseUser.getDisplayName();
+        String email = firebaseUser.getEmail();
+        return new User(uid, name, email);
+    }
+
+    public void createUserInFireStoreIfNotExists(@NotNull User authenticatedUser) {
+        DocumentReference userRefByUid =
+                FirebaseFirestore.getInstance()
+                        .collection(USERS)
+                        .document(authenticatedUser.getUid());
+        userRefByUid
+                .get()
+                .addOnSuccessListener(
+                        documentSnapshot -> {
+                            if (documentSnapshot == null) {
+                                authenticationResultLiveData.setValue(false);
+                                return;
+                            }
+                            if (documentSnapshot.exists()) return;
+
+                            userRefByUid
+                                    .set(authenticatedUser)
+                                    .addOnCompleteListener(
+                                            userCreationTask -> {
+                                                if (userCreationTask.isSuccessful()) {
+                                                    userLiveData.setValue(authenticatedUser);
+                                                    authenticationResultLiveData.setValue(true);
+                                                }
+                                            });
+                        })
+                .addOnFailureListener(e -> authenticationResultLiveData.setValue(false));
+    }
+
     public void login(String email, String password) {
         firebaseAuth
                 .signInWithEmailAndPassword(email, password)
@@ -97,34 +133,6 @@ public class FirebaseAuthRepository {
                         });
     }
 
-    public void createUserInFireStoreIfNotExists(@NotNull User authenticatedUser) {
-        DocumentReference userRefByUid =
-                FirebaseFirestore.getInstance()
-                        .collection(USERS)
-                        .document(authenticatedUser.getUid());
-        userRefByUid
-                .get()
-                .addOnSuccessListener(
-                        documentSnapshot -> {
-                            if (documentSnapshot == null) {
-                                authenticationResultLiveData.setValue(false);
-                                return;
-                            }
-                            if (documentSnapshot.exists()) return;
-
-                            userRefByUid
-                                    .set(authenticatedUser)
-                                    .addOnCompleteListener(
-                                            userCreationTask -> {
-                                                if (userCreationTask.isSuccessful()) {
-                                                    userLiveData.setValue(authenticatedUser);
-                                                    authenticationResultLiveData.setValue(true);
-                                                }
-                                            });
-                        })
-                .addOnFailureListener(e -> authenticationResultLiveData.setValue(false));
-    }
-
     public void logout() {
         firebaseAuth.signOut();
         authenticationResultLiveData.setValue(null);
@@ -144,13 +152,5 @@ public class FirebaseAuthRepository {
             getUserFromFireStore(firebaseAuth.getCurrentUser().getUid());
         }
         return isUserLoggedIn;
-    }
-
-    @NotNull
-    private User getUserFromFireBaseUser(@NotNull FirebaseUser firebaseUser) {
-        String uid = firebaseUser.getUid();
-        String name = firebaseUser.getDisplayName();
-        String email = firebaseUser.getEmail();
-        return new User(uid, name, email);
     }
 }

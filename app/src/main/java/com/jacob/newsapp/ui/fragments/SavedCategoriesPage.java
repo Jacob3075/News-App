@@ -21,10 +21,6 @@ public class SavedCategoriesPage extends Fragment {
     private SavedCategoriesPageViewModel viewModel;
     private SavedCategoriesPageFragmentBinding binding;
 
-    public static SavedCategoriesPage newInstance() {
-        return new SavedCategoriesPage();
-    }
-
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater,
