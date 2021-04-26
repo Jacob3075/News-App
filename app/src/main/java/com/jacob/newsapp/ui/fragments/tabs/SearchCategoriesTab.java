@@ -8,13 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jacob.newsapp.adapters.PagedNewsListAdapter;
-import com.jacob.newsapp.adapters.PagedNewsListAdapter.CardViewModelFunctions;
-import com.jacob.newsapp.adapters.PagedNewsListAdapter.Page;
 import com.jacob.newsapp.databinding.SearchCategoriesTabFragmentBinding;
-import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.viewmodels.SearchPageViewModel;
 
 public class SearchCategoriesTab extends Fragment {
@@ -41,24 +37,8 @@ public class SearchCategoriesTab extends Fragment {
 
     private void setUpRecyclerView() {
         RecyclerView recyclerView = binding.recyclerView;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
 
-        CardViewModelFunctions listener =
-                new CardViewModelFunctions() {
-                    @Override
-                    public boolean onArticleClicked(Article article) {
-                        return viewModel.saveArticleButtonPressed(article);
-                    }
-
-                    @Override
-                    public boolean isArticleSaved(Article article) {
-                        return viewModel.isArticleSaved(article);
-                    }
-                };
-
-        PagedNewsListAdapter adapter = new PagedNewsListAdapter(listener, Page.SEARCH);
+        PagedNewsListAdapter adapter = viewModel.setUpRecyclerView();
 
         viewModel.getPagedListLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), adapter::submitList);

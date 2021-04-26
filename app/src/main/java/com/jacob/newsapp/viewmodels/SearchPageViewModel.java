@@ -4,6 +4,7 @@ import android.util.Pair;
 import androidx.lifecycle.*;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
+import com.jacob.newsapp.adapters.PagedNewsListAdapter;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.repositories.FireBaseUserDataRepository;
 import com.jacob.newsapp.services.NewsDataFactory;
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static com.jacob.newsapp.adapters.PagedNewsListAdapter.CardViewModelFunctions;
+import static com.jacob.newsapp.adapters.PagedNewsListAdapter.Page;
 
 public class SearchPageViewModel extends ViewModel {
 
@@ -74,12 +78,31 @@ public class SearchPageViewModel extends ViewModel {
         query.setValue(newQuery);
     }
 
+    public PagedNewsListAdapter setUpRecyclerView() {
+        CardViewModelFunctions listener =
+                new CardViewModelFunctions() {
+                    @Override
+                    public boolean onArticleClicked(Article article) {
+                        return saveArticleButtonPressed(article);
+                    }
+
+                    @Override
+                    public boolean isArticleSaved(Article article) {
+                        return isArticleAlreadySaved(article);
+                    }
+                };
+
+        PagedNewsListAdapter adapter = new PagedNewsListAdapter(listener, Page.SEARCH);
+        adapter.submitList(pagedListLiveData.getValue());
+        return adapter;
+    }
+
     /**
      * @param article to save or remove from the database
      * @return true if the article was saved and false if the article was removed.
      */
     public boolean saveArticleButtonPressed(Article article) {
-        if (isArticleSaved(article)) {
+        if (isArticleAlreadySaved(article)) {
             userDataRepository.unSaveArticle(article);
             return false;
         } else {
@@ -88,7 +111,7 @@ public class SearchPageViewModel extends ViewModel {
         }
     }
 
-    public boolean isArticleSaved(Article article) {
+    public boolean isArticleAlreadySaved(Article article) {
         List<Article> articles = userDataRepository.getArticlesLiveData().getValue();
         if (articles == null) {
             articles = new ArrayList<>();

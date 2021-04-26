@@ -79,8 +79,7 @@ public class SearchPage extends Fragment {
         TabLayout tabLayout = binding.tabLayout;
 
         TabBarAdapter adapter =
-                new TabBarAdapter(
-                        getParentFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+                new TabBarAdapter(getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         adapter.addFragment(new SearchArticlesTab(), "Articles");
         adapter.addFragment(new SearchSourcesTab(), "Sources");
