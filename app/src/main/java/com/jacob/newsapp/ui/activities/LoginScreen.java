@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import com.jacob.newsapp.MainActivity;
 import com.jacob.newsapp.databinding.LoginScreenBinding;
@@ -21,10 +20,8 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = LoginScreenBinding.inflate(getLayoutInflater());
-        ConstraintLayout root = binding.getRoot();
         viewModel = new ViewModelProvider(this).get(LoginScreenViewModel.class);
-
-        setContentView(root);
+        setContentView(binding.getRoot());
         setUpUI();
     }
 
