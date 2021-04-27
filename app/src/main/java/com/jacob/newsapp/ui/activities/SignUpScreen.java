@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jacob.newsapp.MainActivity;
 import com.jacob.newsapp.databinding.SignUpScreenBinding;
 import com.jacob.newsapp.viewmodels.SignUpScreenViewModel;
-import org.jetbrains.annotations.NotNull;
 
 public class SignUpScreen extends AppCompatActivity {
 
@@ -39,7 +38,7 @@ public class SignUpScreen extends AppCompatActivity {
         String userName = binding.userNameInput.getText().toString();
         String email = binding.emailInput.getText().toString();
         String password = binding.passwordInput.getText().toString();
-        if (!verifyInputs(userName, email, password)) return;
+        if (!viewModel.verifyInputs(userName, email, password)) return;
 
         viewModel.register(userName, email, password);
     }
@@ -55,29 +54,5 @@ public class SignUpScreen extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Sign Up Failed, try again later", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean verifyInputs(@NotNull String userName, String email, String password) {
-        if (userName.isEmpty()) {
-            Toast.makeText(this, "User Name can not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (email.isEmpty()) {
-            Toast.makeText(this, "Email can not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (password.isEmpty()) {
-            Toast.makeText(this, "Password can not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (password.length() < 8) {
-            Toast.makeText(
-                            this,
-                            "Password length must be greater than 8 character",
-                            Toast.LENGTH_SHORT)
-                    .show();
-            return false;
-        }
-        return true;
     }
 }
