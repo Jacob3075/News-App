@@ -39,10 +39,13 @@ public class SearchSourcesTab extends Fragment {
     private void setUpRecyclerView() {
         RecyclerView recyclerView = binding.recyclerView;
 
-        PagedNewsListAdapter adapter = viewModel.setUpRecyclerView();
+        PagedNewsListAdapter adapter =
+                viewModel.setUpRecyclerView(viewModel.getPagedArticlesBySourceLiveData());
 
-        viewModel.getPagedListLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
+        viewModel.getPagedArticlesBySourceLiveData().removeObservers(getViewLifecycleOwner());
+        viewModel
+                .getPagedArticlesBySourceLiveData()
+                .observe(getViewLifecycleOwner(), adapter::submitList);
         recyclerView.setAdapter(adapter);
     }
 

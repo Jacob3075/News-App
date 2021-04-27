@@ -1,6 +1,5 @@
 package com.jacob.newsapp.viewmodels;
 
-import android.util.Pair;
 import androidx.lifecycle.*;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -8,7 +7,7 @@ import com.jacob.newsapp.adapters.PagedNewsListAdapter;
 import com.jacob.newsapp.models.Article;
 import com.jacob.newsapp.repositories.FireBaseUserDataRepository;
 import com.jacob.newsapp.services.NewsDataFactory;
-import com.jacob.newsapp.ui.fragments.SearchPage;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +21,10 @@ public class SearchPageViewModel extends ViewModel {
 
     private final FireBaseUserDataRepository userDataRepository =
             FireBaseUserDataRepository.getInstance();
-    private final MutableLiveData<Pair<SearchPage.SEARCH_PAGES, String>> query =
-            new MediatorLiveData<>();
-    private LiveData<PagedList<Article>> pagedListLiveData;
+    private final MutableLiveData<String> query = new MediatorLiveData<>();
+    private LiveData<PagedList<Article>> pagedArticlesByNameLiveData;
+    private LiveData<PagedList<Article>> pagedArticlesBySourceLiveData;
+    private LiveData<PagedList<Article>> pagedArticlesByCategoryLiveData;
 
     public SearchPageViewModel() {
         init();
@@ -39,29 +39,44 @@ public class SearchPageViewModel extends ViewModel {
                         .setPageSize(25)
                         .build();
 
-        pagedListLiveData =
+        pagedArticlesByNameLiveData =
                 Transformations.switchMap(
                         query,
                         newQuery -> {
-                            if (newQuery.second.isEmpty()) return pagedListLiveData;
-
-                            String keywordsQuery = "";
-                            String sourceQuery = "";
-                            String categoryQuery = "";
-
-                            switch (newQuery.first) {
-                                case SOURCES:
-                                    sourceQuery = newQuery.second;
-                                    break;
-                                case KEYWORDS:
-                                    keywordsQuery = newQuery.second;
-                                    break;
-                                case CATEGORIES:
-                                    categoryQuery = newQuery.second;
-                            }
+                            if (newQuery.isEmpty()) return pagedArticlesByNameLiveData;
 
                             NewsDataFactory newsDataFactoryWithQuery =
-                                    new NewsDataFactory(keywordsQuery, sourceQuery, categoryQuery);
+                                    new NewsDataFactory(newQuery, "", "");
+
+                            return new LivePagedListBuilder<>(
+                                            newsDataFactoryWithQuery, pagedListConfig)
+                                    .setFetchExecutor(executor)
+                                    .build();
+                        });
+
+        pagedArticlesBySourceLiveData =
+                Transformations.switchMap(
+                        query,
+                        newQuery -> {
+                            if (newQuery.isEmpty()) return pagedArticlesBySourceLiveData;
+
+                            NewsDataFactory newsDataFactoryWithQuery =
+                                    new NewsDataFactory("", newQuery, "");
+
+                            return new LivePagedListBuilder<>(
+                                            newsDataFactoryWithQuery, pagedListConfig)
+                                    .setFetchExecutor(executor)
+                                    .build();
+                        });
+
+        pagedArticlesByCategoryLiveData =
+                Transformations.switchMap(
+                        query,
+                        newQuery -> {
+                            if (newQuery.isEmpty()) return pagedArticlesByCategoryLiveData;
+
+                            NewsDataFactory newsDataFactoryWithQuery =
+                                    new NewsDataFactory("", "", newQuery);
 
                             return new LivePagedListBuilder<>(
                                             newsDataFactoryWithQuery, pagedListConfig)
@@ -70,15 +85,24 @@ public class SearchPageViewModel extends ViewModel {
                         });
     }
 
-    public LiveData<PagedList<Article>> getPagedListLiveData() {
-        return pagedListLiveData;
+    public LiveData<PagedList<Article>> getPagedArticlesByNameLiveData() {
+        return pagedArticlesByNameLiveData;
     }
 
-    public void setQuery(Pair<SearchPage.SEARCH_PAGES, String> newQuery) {
+    public LiveData<PagedList<Article>> getPagedArticlesBySourceLiveData() {
+        return pagedArticlesBySourceLiveData;
+    }
+
+    public LiveData<PagedList<Article>> getPagedArticlesByCategoryLiveData() {
+        return pagedArticlesByCategoryLiveData;
+    }
+
+    public void setQuery(String newQuery) {
         query.setValue(newQuery);
     }
 
-    public PagedNewsListAdapter setUpRecyclerView() {
+    public PagedNewsListAdapter setUpRecyclerView(
+            @NotNull LiveData<PagedList<Article>> pagedListLiveData) {
         CardViewModelFunctions listener =
                 new CardViewModelFunctions() {
                     @Override

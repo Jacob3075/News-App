@@ -1,7 +1,6 @@
 package com.jacob.newsapp.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,6 @@ import com.jacob.newsapp.ui.fragments.tabs.SearchCategoriesTab;
 import com.jacob.newsapp.ui.fragments.tabs.SearchSourcesTab;
 import com.jacob.newsapp.viewmodels.SearchPageViewModel;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -55,9 +52,7 @@ public class SearchPage extends Fragment {
 
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        int currentPage = binding.viewPager.getCurrentItem();
-                        SEARCH_PAGES searchPage = SEARCH_PAGES.valueOf(currentPage);
-                        viewModel.setQuery(new Pair<>(searchPage, query));
+                        viewModel.setQuery(query);
                         return false;
                     }
 
@@ -87,20 +82,5 @@ public class SearchPage extends Fragment {
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    public enum SEARCH_PAGES {
-        KEYWORDS(0),
-        SOURCES(1),
-        CATEGORIES(2);
-        private final int value;
-
-        SEARCH_PAGES(int value) {
-            this.value = value;
-        }
-
-        public static SEARCH_PAGES valueOf(int value) {
-            return Arrays.stream(values()).filter(page -> page.value == value).findFirst().get();
-        }
     }
 }
